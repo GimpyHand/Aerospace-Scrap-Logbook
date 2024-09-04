@@ -4,6 +4,39 @@ import pandas as pd
 from datetime import datetime
 import os
 import webbrowser
+import shutil
+
+# Specify the source and copy destination directories for the Engine Shop Excel Files
+# source_dir = 'path/to/your/source_directory'
+# destination_dir = 'path/to/your/destination_directory'
+
+# Create the destination directory if it doesn't exist
+os.makedirs(destination_dir, exist_ok=True)
+
+# Loop through all files in the source directory
+for file_name in os.listdir(source_dir):
+    # Check if the file is an xlsm file
+    if file_name.endswith('.xlsm'):
+        # Construct the full file path
+        source_file_path = os.path.join(source_dir, file_name)
+        destination_file_path = os.path.join(destination_dir, file_name)
+
+        # Copy the file to the destination directory
+        shutil.copy2(source_file_path, destination_file_path)
+        print(f"Copied: {file_name}")
+
+# Get the path to the current directory
+current_dir = os.path.dirname(__file__)
+
+# Load the scrap parts numbers + descriptions file
+scrap_parts_file = os.path.join(current_dir, 'Scrap Parts Numbers + Descriptions.csv')
+scrap_parts_df = pd.read_csv(scrap_parts_file)
+
+# Rename the columns to 'Part Number' and 'Description'
+scrap_parts_df = scrap_parts_df.rename(columns={'Unnamed: 0': 'Part Number', 'Unnamed: 1': 'Description'})
+
+# Create a dictionary for easy lookup
+part_lookup = scrap_parts_df.set_index('Part Number')['Description'].to_dict()
 
 # Path to the CSV file
 csv_file_path = r'X:\AEROSPACE\Aerospace YWG Scrap Parts Logbook\scrap_logbook.csv'
@@ -11,13 +44,20 @@ csv_file_path = r'X:\AEROSPACE\Aerospace YWG Scrap Parts Logbook\scrap_logbook.c
 # Function to submit data to the CSV file
 def submit_data():
     # Get values from the form
-    date = entry_date.get()
-    wo = entry_wo.get()
-    part_number = entry_part_number.get()
-    part_description = entry_part_description.get()
-    serial_number = entry_serial_number.get()
-    initials = entry_initials.get()
-    remarks = entry_remarks.get()
+    date = entry_date.get().strip()
+    initials = entry_initials.get().strip()
+
+    # Check if required fields are filled out
+    if not date or not initials:
+        missing_fields = []
+        if not date:
+            missing_fields.append("Date")
+        if not initials:
+            missing_fields.append("Initials")
+
+        # Show error message box indicating which fields are missing
+        messagebox.showerror("Missing Information", f"Please fill out the following required field(s): {', '.join(missing_fields)}")
+        return
 
     # Validate the date format
     try:
@@ -25,6 +65,13 @@ def submit_data():
     except ValueError:
         messagebox.showerror("Invalid Date", "Please enter the date in YYYY-MM-DD format.")
         return
+
+    # If both required fields are filled and valid, proceed with submission
+    wo = entry_wo.get().strip()
+    part_number = entry_part_number.get().strip()
+    part_description = entry_part_description.get().strip()
+    serial_number = entry_serial_number.get().strip()
+    remarks = entry_remarks.get().strip()
 
     # Append the data to the CSV file
     new_data = {
@@ -70,7 +117,6 @@ def clear_form():
 def load_data():
     if os.path.exists(csv_file_path):
         df = pd.read_csv(csv_file_path)
-        df = df.tail(20)  # Get the last 20 records
 
         # Clear the current table display
         for widget in table_frame.winfo_children():
@@ -131,7 +177,7 @@ form_frame = tk.Frame(root)
 form_frame.grid(row=0, column=0, sticky="nsew")
 
 # Create and place form labels and entries with centered text
-tk.Label(form_frame, text="Date (YYYY-MM-DD):").grid(row=0, column=0, padx=5, pady=5, sticky='e')
+tk.Label(form_frame, text="*Date (YYYY-MM-DD):", fg="red").grid(row=0, column=0, padx=5, pady=5, sticky='e')
 entry_date = tk.Entry(form_frame, justify='center')
 entry_date.grid(row=0, column=1, padx=5, pady=5, sticky='ew')
 
@@ -155,7 +201,7 @@ tk.Label(form_frame, text="Serial Number:").grid(row=4, column=0, padx=5, pady=5
 entry_serial_number = tk.Entry(form_frame, justify='center')
 entry_serial_number.grid(row=4, column=1, padx=5, pady=5, sticky='ew')
 
-tk.Label(form_frame, text="Initials:").grid(row=5, column=0, padx=5, pady=5, sticky='e')
+tk.Label(form_frame, text="*Initials:", fg="red").grid(row=5, column=0, padx=5, pady=5, sticky='e')
 entry_initials = tk.Entry(form_frame, justify='center')
 entry_initials.grid(row=5, column=1, padx=5, pady=5, sticky='ew')
 
@@ -165,10 +211,10 @@ entry_remarks.grid(row=6, column=1, padx=5, pady=5, sticky='ew')
 
 # Create and place buttons
 btn_submit = tk.Button(form_frame, text="Submit", command=submit_data)
-btn_submit.grid(row=7, column=0, columnspan=2, padx=5, pady=5, sticky='ew')
+btn_submit.grid(row=7, column=0, padx=5, pady=5, sticky='ew')
 
 btn_clear = tk.Button(form_frame, text="Clear", command=clear_form)
-btn_clear.grid(row=7, column=2, padx=5, pady=5, sticky='ew')
+btn_clear.grid(row=7, column=1, padx=5, pady=5, sticky='ew')
 
 # Create a scrollable frame for the table
 scroll_canvas = tk.Canvas(root)
@@ -207,7 +253,7 @@ lbl_email_link = tk.Label(status_frame, text="Contact Support", fg="blue", curso
 lbl_email_link.pack(side="right", fill="x", expand=True)
 lbl_email_link.bind("<Button-1>", lambda e: open_mailto())
 
-# Load and display the last 20 entries
+# Load and display the records
 load_data()
 
 # Configure row and column weights for resizing
