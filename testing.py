@@ -5,6 +5,8 @@ from datetime import datetime
 import os
 import webbrowser
 import shutil
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 # Specify the source and copy destination directories for the Engine Shop Excel Files
 source_dir = r'X:\ENGINE SERVICES\02 Work Orders'
@@ -12,20 +14,31 @@ destination_dir = r'X:\ENGINE SERVICES\Scrap Log Files'
 
 # Create the destination directory if it doesn't exist
 os.makedirs(destination_dir, exist_ok=True)
-
+'''
 # Loop through all files in the source directory recursively
 for dirpath, dirnames, filenames in os.walk(source_dir):
     for file_name in filenames:
         # Check if the file is an xlsm file
         if file_name.endswith('.xlsm'):
-            # Construct the full file path
-            source_file_path = os.path.join(dirpath, file_name)
-            destination_file_path = os.path.join(destination_dir, file_name)
-
-            # Copy the file to the destination directory
-            shutil.copy2(source_file_path, destination_file_path)
-            print(f"Copied: {file_name}")
-
+            # Check if the file name contains "(AutoRecovered)"
+            if "(AutoRecovered)" not in file_name:
+                # Construct the full file path
+                source_file_path = os.path.join(dirpath, file_name)
+                # Get the size of the file in bytes
+                file_size = os.path.getsize(source_file_path)
+                # Check if the file size is greater than 1KB
+                if file_size > 1024:
+                    # Get the directory name from the source path
+                    dir_name = os.path.basename(dirpath)
+                    # Construct the destination file path with the directory name
+                    destination_file_path = os.path.join(destination_dir, f"{dir_name}_{file_name}")
+                    try:
+                        # Copy the file to the destination directory
+                        shutil.copy2(source_file_path, destination_file_path)
+                        print(f"Copied: {destination_file_path}")
+                    except Exception as e:
+                        print(f"Failed to copy {source_file_path} to {destination_file_path}: {e}")
+'''
 # Get the path to the current directory
 current_dir = os.path.dirname(__file__)
 
@@ -37,7 +50,7 @@ scrap_parts_df = pd.read_csv(scrap_parts_file)
 scrap_parts_df = scrap_parts_df.rename(columns={'Unnamed: 0': 'Part Number', 'Unnamed: 1': 'Description'})
 
 # Create a dictionary for easy lookup
-part_lookup = scrap_parts_df.set_index('Part Number')['Description'].to_dict()
+# part_lookup = scrap_parts_df.set_index('Part Number')['Description'].to_dict()
 
 # Path to the new scrap CSV file
 csv_file_path = r'X:\AEROSPACE\Aerospace YWG Scrap Parts Logbook\scrap_logbook.csv'
@@ -156,6 +169,30 @@ def load_data():
         num_records = len(df)
         lbl_record_count.config(text=f"# of records: {num_records}")
 
+        # Update the line chart
+        update_line_chart(df)
+
+# Function to update the line chart
+def update_line_chart(df):
+    df['Date'] = pd.to_datetime(df['Date'])
+    df['Month'] = df['Date'].dt.to_period('M')
+    monthly_counts = df.groupby('Month').size()
+
+    fig, ax = plt.subplots(figsize=(6, 3))  # Adjust the figsize to fit within the specified area
+    monthly_counts.plot(kind='line', ax=ax)
+    ax.set_title('Number of Records by Month')
+    ax.set_xlabel('Month')
+    ax.set_ylabel('Number of Records')
+
+    # Clear the previous chart
+    for widget in chart_frame.winfo_children():
+        widget.destroy()
+
+    # Embed the new chart
+    canvas = FigureCanvasTkAgg(fig, master=chart_frame)
+    canvas.draw()
+    canvas.get_tk_widget().grid(row=0, column=0, sticky="nsew")
+
 # Function to insert the current date
 def insert_current_date():
     current_date = datetime.now().strftime('%Y-%m-%d')
@@ -217,6 +254,10 @@ btn_submit.grid(row=7, column=0, padx=5, pady=5, sticky='ew')
 btn_clear = tk.Button(form_frame, text="Clear", command=clear_form)
 btn_clear.grid(row=7, column=1, padx=5, pady=5, sticky='ew')
 
+# Create a frame for the chart
+chart_frame = tk.Frame(root, width=600, height=325)  # Set the size and background color for visualization
+chart_frame.grid(row=0, column=1, rowspan=5, sticky="nsew")  # Adjust the grid location
+
 # Create a scrollable frame for the table
 scroll_canvas = tk.Canvas(root)
 scrollbar = tk.Scrollbar(root, orient="vertical", command=scroll_canvas.yview)
@@ -230,8 +271,8 @@ scroll_frame.bind("<Configure>", on_frame_configure)
 
 # Place the frame inside the canvas and configure scrolling
 scroll_canvas.create_window((0, 0), window=scroll_frame, anchor="nw")
-scroll_canvas.grid(row=1, column=0, sticky="nsew")
-scrollbar.grid(row=1, column=1, sticky="ns")
+scroll_canvas.grid(row=1, column=0, columnspan=3, sticky="nsew")  # Adjust the grid location
+scrollbar.grid(row=1, column=3, sticky="ns")
 
 scroll_canvas.config(yscrollcommand=scrollbar.set)
 
@@ -244,7 +285,7 @@ table_frame.pack(fill="both", expand=True)
 
 # Create the status bar frame
 status_frame = tk.Frame(root, bd=1, relief="sunken")
-status_frame.grid(row=2, column=0, sticky="ew")
+status_frame.grid(row=2, column=0, columnspan=4, sticky="ew")  # Adjust the grid location
 
 # Add status bar widgets
 lbl_record_count = tk.Label(status_frame, text="# of records: 0", anchor='w', padx=5)
@@ -263,6 +304,9 @@ root.grid_rowconfigure(1, weight=3)  # Table row
 root.grid_rowconfigure(2, weight=0)  # Status bar row
 
 root.grid_columnconfigure(0, weight=1)  # Main column
+root.grid_columnconfigure(1, weight=1)  # Main column
+root.grid_columnconfigure(2, weight=1)  # Main column
+root.grid_columnconfigure(3, weight=1)  # Chart column
 
 # Start the GUI event loop
 root.mainloop()
