@@ -4,42 +4,8 @@ import pandas as pd
 from datetime import datetime
 import os
 import webbrowser
-import shutil
 
-# Specify the source and copy destination directories for the Engine Shop Excel Files
-source_dir = r'X:\ENGINE SERVICES\02 Work Orders'
-destination_dir = r'X:\ENGINE SERVICES\Scrap Log Files'
-
-# Create the destination directory if it doesn't exist
-os.makedirs(destination_dir, exist_ok=True)
-
-# Loop through all files in the source directory recursively
-for dirpath, dirnames, filenames in os.walk(source_dir):
-    for file_name in filenames:
-        # Check if the file is an xlsm file
-        if file_name.endswith('.xlsm'):
-            # Construct the full file path
-            source_file_path = os.path.join(dirpath, file_name)
-            destination_file_path = os.path.join(destination_dir, file_name)
-
-            # Copy the file to the destination directory
-            shutil.copy2(source_file_path, destination_file_path)
-            print(f"Copied: {file_name}")
-
-# Get the path to the current directory
-current_dir = os.path.dirname(__file__)
-
-# Load the scrap parts numbers + descriptions file
-scrap_parts_file = os.path.join(current_dir, 'Scrap Parts Numbers + Descriptions.csv')
-scrap_parts_df = pd.read_csv(scrap_parts_file)
-
-# Rename the columns to 'Part Number' and 'Description'
-scrap_parts_df = scrap_parts_df.rename(columns={'Unnamed: 0': 'Part Number', 'Unnamed: 1': 'Description'})
-
-# Create a dictionary for easy lookup
-part_lookup = scrap_parts_df.set_index('Part Number')['Description'].to_dict()
-
-# Path to the new scrap CSV file
+# Path to the CSV file
 csv_file_path = r'X:\AEROSPACE\Aerospace YWG Scrap Parts Logbook\scrap_logbook.csv'
 
 # Function to submit data to the CSV file
@@ -136,7 +102,7 @@ def load_data():
 
         # Display the table headers with bold text
         for i, col in enumerate(df.columns):
-            header = tk.Label(table_frame, text=col, borderwidth=1, relief="solid", bg='lightblue', anchor='center', padx=5, pady=5, font=('Arial', 10, 'bold'))
+            header = tk.Label(table_frame, text=col, borderwidth=1, relief="solid", bg='lightblue', anchor='center', padx=5, pady=5, font=('Arial', 12, 'bold'))
             header.grid(row=0, column=i, sticky="nsew")
             table_frame.grid_columnconfigure(i, minsize=column_widths.get(col, 100))  # Set minimum column width
 
