@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import messagebox, ttk
 import pandas as pd
 from datetime import datetime
 import os
@@ -94,8 +94,8 @@ def clear_form():
         entry_remarks.delete(0, tk.END)
 
 # Function to load and display records from the database
-def load_data():
-    print("Loading data...")
+def load_data(records_to_load=50):
+    print(f"Loading data... {records_to_load} records")
     conn = sqlite3.connect(db_file_path)
 
     # Query to get the total number of records
@@ -103,9 +103,14 @@ def load_data():
     cursor.execute("SELECT COUNT(*) FROM scrap_logbook")
     total_records = cursor.fetchone()[0]
 
-    # Query to get the first 50 records
+    # Determine how many records to load
+    limit_query = ""
+    if records_to_load != 'ALL':
+        limit_query = f"LIMIT {records_to_load}"
+
+    # Query to get the records
     df = pd.read_sql_query(
-        "SELECT date, wo, part_number, part_description, serial_number, initials, remarks FROM scrap_logbook LIMIT 50",
+        f"SELECT date, wo, part_number, part_description, serial_number, initials, remarks FROM scrap_logbook ORDER BY date DESC {limit_query}",
         conn)
     conn.close()
     print(f"Data loaded: {len(df)} rows")
@@ -148,6 +153,14 @@ def insert_current_date():
     current_date = datetime.now().strftime('%Y-%m-%d')
     entry_date.delete(0, tk.END)
     entry_date.insert(0, current_date)
+
+# Function to handle record selection change
+def on_records_change(event):
+    selected_value = record_selection.get()
+    if selected_value == 'ALL':
+        load_data('ALL')
+    else:
+        load_data(int(selected_value))
 
 # Function to open the mailto link
 def open_mailto():
@@ -245,6 +258,12 @@ status_frame.grid(row=2, column=0, sticky="ew")
 lbl_record_count = tk.Label(status_frame, text="Total records: 0", anchor='w', padx=5)
 lbl_record_count.pack(side="left", fill="x", expand=True)
 
+# Add record selection dropdown
+record_selection = ttk.Combobox(status_frame, values=[50, 100, 500, 1000, 'ALL'], state="readonly", width=10)
+record_selection.set(50)  # Set default to 50
+record_selection.pack(side="left", padx=10)
+record_selection.bind("<<ComboboxSelected>>", on_records_change)
+
 lbl_email_link = tk.Label(status_frame, text="Contact Support", fg="blue", cursor="hand2", anchor='e', padx=5)
 lbl_email_link.pack(side="right", fill="x", expand=True)
 lbl_email_link.bind("<Button-1>", lambda e: open_mailto())
@@ -257,7 +276,6 @@ load_data()
 root.grid_rowconfigure(0, weight=1)  # Form frame row
 root.grid_rowconfigure(1, weight=3)  # Table row
 root.grid_rowconfigure(2, weight=0)  # Status bar row
-
 root.grid_columnconfigure(0, weight=1)  # Main column
 
 # Start the GUI event loop
