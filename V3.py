@@ -15,7 +15,7 @@ class ScrapLogbook(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Cadorath Aerospace Scrap Logbook")
-        self.setGeometry(100, 100, 1360, 768)
+        self.setGeometry(280, 156, 1360, 768)
 
         # Main widget and layout
         self.central_widget = QWidget()
@@ -119,14 +119,14 @@ class ScrapLogbook(QMainWindow):
         self.form_layout.addWidget(self.btn_clear, 7, 1)
 
     def setup_status_bar(self):
+        # Adding the record count label to the left
         self.lbl_record_count = QLabel("Total records: 0", self)
         self.status_layout.addWidget(self.lbl_record_count)
 
-        self.record_selection = QComboBox(self)
-        self.record_selection.addItems(['50', '100', '500', '1000', 'ALL'])
-        self.record_selection.currentIndexChanged.connect(self.on_records_change)
-        self.status_layout.addWidget(self.record_selection)
+        # Add a spacer to push the "Contact Support" link to the right
+        self.status_layout.addStretch(1)
 
+        # Adding the Contact Support link to the right
         self.lbl_email_link = QLabel('<a href="mailto:alex.jessup@cadorath.com?subject=Scrap%20Log%20Issue">Contact Support</a>', self)
         self.lbl_email_link.setOpenExternalLinks(True)
         self.status_layout.addWidget(self.lbl_email_link)
@@ -134,6 +134,16 @@ class ScrapLogbook(QMainWindow):
     def setup_table(self):
         self.table_widget = QTableWidget(self)
         self.table_layout.addWidget(self.table_widget)
+
+
+        # Set minimum column widths (adjust based on your needs)
+        self.table_widget.setColumnWidth(0, 150)  # Date
+        self.table_widget.setColumnWidth(1, 100)  # W/O
+        self.table_widget.setColumnWidth(2, 150)  # Part Number
+        self.table_widget.setColumnWidth(3, 200)  # Part Description
+        self.table_widget.setColumnWidth(4, 150)  # Serial Number
+        self.table_widget.setColumnWidth(5, 100)  # Initials
+        self.table_widget.setColumnWidth(6, 200)  # Remarks
 
     def initialize_db(self):
         conn = sqlite3.connect(db_file_path)
@@ -203,7 +213,32 @@ class ScrapLogbook(QMainWindow):
 
         for i, row in df.iterrows():
             for j, value in enumerate(row):
-                self.table_widget.setItem(i, j, QTableWidgetItem(str(value)))
+                item = QTableWidgetItem(str(value))
+                if j in [0, 1, 2, 4, 5]:  # Indexes of columns to be center justified
+                    item.setTextAlignment(Qt.AlignCenter)
+                else:
+                    item.setTextAlignment(Qt.AlignLeft)
+                self.table_widget.setItem(i, j, item)
+
+        # Set column widths after loading data (optional, if not already done in setup_table)
+        self.table_widget.setColumnWidth(0, 80)  # Date
+        self.table_widget.setColumnWidth(1, 80)  # W/O
+        self.table_widget.setColumnWidth(2, 150)  # Part Number
+        self.table_widget.setColumnWidth(3, 300)  # Part Description
+        self.table_widget.setColumnWidth(4, 120)  # Serial Number
+        self.table_widget.setColumnWidth(5, 80)  # Initials
+        self.table_widget.setColumnWidth(6, 455)  # Remarks
+
+        # Update the total record count
+        self.update_record_count()
+
+    def update_record_count(self):
+        conn = sqlite3.connect(db_file_path)
+        cursor = conn.cursor()
+        cursor.execute('SELECT COUNT(*) FROM scrap_logbook')
+        count = cursor.fetchone()[0]
+        conn.close()
+        self.lbl_record_count.setText(f"Total records: {count}")
 
     def clear_form(self):
         self.entry_date.clear()
@@ -215,18 +250,10 @@ class ScrapLogbook(QMainWindow):
         self.entry_remarks.clear()
 
     def insert_current_date(self):
-        current_date = datetime.now().strftime('%Y-%m-%d')
-        self.entry_date.setText(current_date)
+        self.entry_date.setText(datetime.now().strftime('%Y-%m-%d'))
 
-    def on_records_change(self):
-        selected_value = self.record_selection.currentText()
-        # Implement record loading logic based on selection (optional)
-
-def main():
+if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = ScrapLogbook()
     window.show()
     sys.exit(app.exec_())
-
-if __name__ == "__main__":
-    main()
