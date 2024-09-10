@@ -130,14 +130,11 @@ def load_data(records_to_load=50):
         'remarks': 475
     }
 
-    # Define custom header names
-    custom_headers = ['Date', 'W/O', 'Part Number', 'Part Description', 'Serial Number', 'Initials', 'Remarks']
-
-    # Display the table headers with bold text using custom header names
-    for i, col in enumerate(custom_headers):
+    # Display the table headers with bold text
+    for i, col in enumerate(df.columns):
         header = tk.Label(table_frame, text=col, borderwidth=1, relief="solid", bg='lightblue', anchor='center', padx=5, pady=5, font=('Arial', 10, 'bold'))
         header.grid(row=0, column=i, sticky="nsew")
-        table_frame.grid_columnconfigure(i, minsize=column_widths.get(df.columns[i], 100))  # Set minimum column width based on data columns
+        table_frame.grid_columnconfigure(i, minsize=column_widths.get(col, 100))  # Set minimum column width
 
     # Load all data
     for i, row in df.iterrows():
@@ -149,6 +146,7 @@ def load_data(records_to_load=50):
 
     # Update status bar with the total number of records
     lbl_record_count.config(text=f"Total records: {total_records}")
+
 
 # Function to insert the current date
 def insert_current_date():
@@ -216,36 +214,69 @@ tk.Label(center_frame, text="Remarks:").grid(row=6, column=0, padx=5, pady=5, st
 entry_remarks = tk.Entry(center_frame, justify='center')
 entry_remarks.grid(row=6, column=1, padx=5, pady=5, sticky='ew')
 
-# Create and place the submit and clear buttons
-submit_button = tk.Button(form_frame, text="Submit", command=submit_data)
-submit_button.grid(row=1, column=0, padx=10, pady=10, sticky='w')
+# Create and place buttons
+btn_submit = tk.Button(center_frame, text="Submit", command=submit_data)
+btn_submit.grid(row=7, column=0, padx=5, pady=5, sticky='ew')
 
-clear_button = tk.Button(form_frame, text="Clear Form", command=clear_form)
-clear_button.grid(row=1, column=0, padx=10, pady=10, sticky='e')
+btn_clear = tk.Button(center_frame, text="Clear", command=clear_form)
+btn_clear.grid(row=7, column=1, padx=5, pady=5, sticky='ew')
 
-# Create the table frame and grid it
-table_frame = tk.Frame(root)
-table_frame.grid(row=1, column=0, sticky="nsew")
+# Configure the form_frame to center the center_frame
+form_frame.grid_columnconfigure(0, weight=1)
+form_frame.grid_rowconfigure(0, weight=1)
 
-# Create the status bar at the bottom of the window
-status_frame = tk.Frame(root, relief=tk.SUNKEN, borderwidth=1)
-status_frame.grid(row=2, column=0, sticky="nsew")
+# Create a scrollable frame for the table
+scroll_canvas = tk.Canvas(root)
+scrollbar = tk.Scrollbar(root, orient="vertical", command=scroll_canvas.yview)
+scroll_frame = tk.Frame(scroll_canvas)
 
-lbl_record_count = tk.Label(status_frame, text="Total records: 0", anchor="w")
-lbl_record_count.pack(side=tk.LEFT, padx=10)
+# Function to configure scrolling
+def on_frame_configure(event):
+    scroll_canvas.configure(scrollregion=scroll_canvas.bbox("all"))
 
-mailto_button = tk.Button(status_frame, text="Report an Issue", command=open_mailto)
-mailto_button.pack(side=tk.RIGHT, padx=10)
+scroll_frame.bind("<Configure>", on_frame_configure)
 
-# Record selection options
-record_selection = ttk.Combobox(status_frame, values=[50, 100, 200, 'ALL'], state='readonly', width=10)
-record_selection.current(0)
+# Place the frame inside the canvas and configure scrolling
+scroll_canvas.create_window((0, 0), window=scroll_frame, anchor="nw")
+scroll_canvas.grid(row=1, column=0, sticky="nsew")
+scrollbar.grid(row=1, column=1, sticky="ns")
+
+scroll_canvas.config(yscrollcommand=scrollbar.set)
+
+# Add a frame for the table to the scrollable frame with padding
+outer_frame = tk.Frame(scroll_frame, padx=5, pady=5)
+outer_frame.pack(fill="both", expand=True, padx=5, pady=5)
+
+table_frame = tk.Frame(outer_frame)
+table_frame.pack(fill="both", expand=True)
+
+# Create the status bar frame
+status_frame = tk.Frame(root, bd=1, relief="sunken")
+status_frame.grid(row=2, column=0, sticky="ew")
+
+# Add status bar widgets
+lbl_record_count = tk.Label(status_frame, text="Total records: 0", anchor='w', padx=5)
+lbl_record_count.pack(side="left", fill="x", expand=True)
+
+# Add record selection dropdown
+record_selection = ttk.Combobox(status_frame, values=[50, 100, 500, 1000, 'ALL'], state="readonly", width=10)
+record_selection.set(50)  # Set default to 50
+record_selection.pack(side="left", padx=10)
 record_selection.bind("<<ComboboxSelected>>", on_records_change)
-record_selection.pack(side=tk.RIGHT, padx=10)
 
-# Initialize the database and load the initial data
+lbl_email_link = tk.Label(status_frame, text="Contact Support", fg="blue", cursor="hand2", anchor='e', padx=5)
+lbl_email_link.pack(side="right", fill="x", expand=True)
+lbl_email_link.bind("<Button-1>", lambda e: open_mailto())
+
+# Initialize the database and load records
 initialize_db()
 load_data()
 
-# Start the Tkinter main loop
+# Configure row and column weights for resizing
+root.grid_rowconfigure(0, weight=1)  # Form frame row
+root.grid_rowconfigure(1, weight=3)  # Table row
+root.grid_rowconfigure(2, weight=0)  # Status bar row
+root.grid_columnconfigure(0, weight=1)  # Main column
+
+# Start the GUI event loop
 root.mainloop()
