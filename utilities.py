@@ -12,6 +12,6 @@ def insert_current_date(entry_date):
 
 def open_mailto():
     """
-    Opens a mailto link in the default web browser.
+    Opens a mailto link in the default mail client.
     """
     webbrowser.open('mailto:alex.jessup@cadorath.com?subject=Scrap%20Log%20Issue')
