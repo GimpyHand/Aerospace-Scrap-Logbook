@@ -2,7 +2,7 @@ import sys
 import sqlite3
 from PyQt5.QtWidgets import (QApplication, QWidget, QMainWindow, QVBoxLayout, QHBoxLayout, QGridLayout, QLabel,
                              QLineEdit, QPushButton, QMessageBox, QComboBox, QFrame, QTableWidget, QTableWidgetItem)
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtGui import QCursor
 import pandas as pd
 from datetime import datetime
@@ -52,6 +52,11 @@ class ScrapLogbook(QMainWindow):
         # Initialize database and load records
         self.initialize_db()
         self.load_data()
+
+        # Set up a timer to refresh data every 30 seconds
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.load_data)
+        self.timer.start(30000)  # 30,000 milliseconds = 30 seconds
 
     def setup_form_elements(self):
         # Date
@@ -135,7 +140,6 @@ class ScrapLogbook(QMainWindow):
         self.table_widget = QTableWidget(self)
         self.table_layout.addWidget(self.table_widget)
 
-
         # Set minimum column widths (adjust based on your needs)
         self.table_widget.setColumnWidth(0, 150)  # Date
         self.table_widget.setColumnWidth(1, 100)  # W/O
@@ -209,7 +213,10 @@ class ScrapLogbook(QMainWindow):
 
         self.table_widget.setRowCount(len(df))
         self.table_widget.setColumnCount(len(df.columns))
-        self.table_widget.setHorizontalHeaderLabels(df.columns)
+
+        # Custom header names
+        custom_headers = ["Date", "Work Order", "Part Number", "Description", "Serial No.", "Initials", "Remarks"]
+        self.table_widget.setHorizontalHeaderLabels(custom_headers)
 
         for i, row in df.iterrows():
             for j, value in enumerate(row):
