@@ -4,12 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="603c2501-99fc-4960-963a-5b2d6f29a5ec" name="Changes" comment="Uploading to work from laptop">
-      <change beforePath="$PROJECT_DIR$/.idea/csv-editor.xml" beforeDir="false" />
+    <list default="true" id="603c2501-99fc-4960-963a-5b2d6f29a5ec" name="Changes" comment="Added autocomplete for the part number and description fields. Added 30s update schedule if changes to db file.">
+      <change afterPath="$PROJECT_DIR$/Cadorath-Logo.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/Aerospace Scrap Logbook.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Aerospace Scrap Logbook.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/V3.py" beforeDir="false" afterPath="$PROJECT_DIR$/V3.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/V3_Backup.py" beforeDir="false" afterPath="$PROJECT_DIR$/V3_Backup.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testing.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,7 +27,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="draft" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -173,7 +174,8 @@
       <workItem from="1725881745764" duration="3174000" />
       <workItem from="1725896981435" duration="16500000" />
       <workItem from="1726054972838" duration="431000" />
-      <workItem from="1726055414206" duration="4371000" />
+      <workItem from="1726055414206" duration="18939000" />
+      <workItem from="1726142721541" duration="10184000" />
     </task>
     <task id="LOCAL-00001" summary="Initial versions of the Scrap Log for Aerospace">
       <option name="closed" value="true" />
@@ -239,7 +241,15 @@
       <option name="project" value="LOCAL" />
       <updated>1725997888226</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Uploading to work from laptop">
+      <option name="closed" value="true" />
+      <created>1726062327622</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1726062327622</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -267,11 +277,11 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$main_backup.coverage" NAME="main_backup Coverage Results" MODIFIED="1725555483066" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$V3_Backup.coverage" NAME="V3_Backup Coverage Results" MODIFIED="1725996442811" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$V3_Backup.coverage" NAME="V3_Backup Coverage Results" MODIFIED="1726155916421" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$V1.coverage" NAME="V1 Coverage Results" MODIFIED="1725974246643" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$test2.coverage" NAME="test2 Coverage Results" MODIFIED="1725476861999" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$pyqt_db_version.coverage" NAME="pyqt_db_version Coverage Results" MODIFIED="1725968707296" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$V3.coverage" NAME="V3 Coverage Results" MODIFIED="1726060023303" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$V3.coverage" NAME="V3 Coverage Results" MODIFIED="1726158094675" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$main.coverage" NAME="main Coverage Results" MODIFIED="1725563854938" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$db_version.coverage" NAME="db_version Coverage Results" MODIFIED="1725890758654" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$db_version_Backup.coverage" NAME="db_version_Backup Coverage Results" MODIFIED="1726055911071" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
