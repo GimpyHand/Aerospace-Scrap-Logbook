@@ -9,7 +9,8 @@ from datetime import datetime
 import webbrowser
 
 # Path to the SQLite database file
-db_file_path = r'X:\AEROSPACE\Aerospace YWG Scrap Parts Logbook\scrap_logbook.db'
+# db_file_path = r'X:\AEROSPACE\Aerospace YWG Scrap Parts Logbook\scrap_logbook.db' # For Windows
+db_file_path = r'scrap_logbook.db' # For Linux
 
 class ScrapLogbook(QMainWindow):
     def __init__(self):

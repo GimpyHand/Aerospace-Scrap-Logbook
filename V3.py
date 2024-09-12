@@ -184,6 +184,14 @@ class ScrapLogbook(QMainWindow):
         # Set custom style for alternating rows
         self.table_widget.setStyleSheet("alternate-background-color: #f0f0f0;")
 
+        # Enable sorting
+        self.table_widget.setSortingEnabled(True)
+        self.table_widget.horizontalHeader().sectionClicked.connect(self.handle_header_click)
+
+    def handle_header_click(self, logicalIndex):
+        self.sort_order = self.table_widget.horizontalHeader().sortIndicatorOrder()
+        self.table_widget.sortItems(logicalIndex, self.sort_order)
+
     def initialize_db(self):
         conn = sqlite3.connect(db_file_path)
         cursor = conn.cursor()
