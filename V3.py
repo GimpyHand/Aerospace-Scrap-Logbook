@@ -19,8 +19,8 @@ warnings.filterwarnings("ignore", category=UserWarning, module="openpyxl")
 # Define source and destination directories
 source_dir = r'X:\ENGINE SERVICES\02 Work Orders'
 destination_dir = r'X:\ENGINE SERVICES\Scrap Log Files'
-log_file_path = r'processed_directories.log'
-db_file_path = r'scrap_logbook.db'
+log_file_path = r'X:\ENGINE SERVICES\Scrap Log Files\processed_directories.log'
+db_file_path = r'X:\AEROSPACE\Aerospace YWG Scrap Parts Logbook\scrap_logbook.db'
 
 class ScrapLogbook(QMainWindow):
     def __init__(self):
