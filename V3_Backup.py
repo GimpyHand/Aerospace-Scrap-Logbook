@@ -1,17 +1,19 @@
-import sys
 import os
+import pandas as pd
 import shutil
-import warnings
 import sqlite3
+import sys
 import threading
+import warnings
+from PyQt5.QtCore import Qt, QTimer, pyqtSignal
+from PyQt5.QtGui import QCursor, QIcon
+from PyQt5.QtWidgets import (QApplication, QWidget, QMainWindow, QVBoxLayout, QHBoxLayout, QGridLayout, QLabel,
+                             QLineEdit, QPushButton, QMessageBox, QComboBox, QFrame, QTableWidget, QTableWidgetItem,
+                             QCompleter, QProgressBar)
 from datetime import datetime
 from openpyxl import load_workbook
 from openpyxl.utils.exceptions import InvalidFileException
 from zipfile import BadZipFile
-from PyQt5.QtWidgets import (QApplication, QWidget, QMainWindow, QVBoxLayout, QHBoxLayout, QGridLayout, QLabel, QLineEdit, QPushButton, QMessageBox, QComboBox, QFrame, QTableWidget, QTableWidgetItem, QCompleter)
-from PyQt5.QtCore import Qt, QTimer
-from PyQt5.QtGui import QCursor, QIcon
-import pandas as pd
 
 # Suppress specific warnings
 warnings.filterwarnings("ignore", category=UserWarning, module="openpyxl")
@@ -19,10 +21,12 @@ warnings.filterwarnings("ignore", category=UserWarning, module="openpyxl")
 # Define source and destination directories
 source_dir = r'X:\ENGINE SERVICES\02 Work Orders'
 destination_dir = r'X:\ENGINE SERVICES\Scrap Log Files'
-log_file_path = r'processed_directories.log'
-db_file_path = r'scrap_logbook.db'
+log_file_path = r'X:\ENGINE SERVICES\Scrap Log Files\processed_directories.log'
+db_file_path = r'X:\AEROSPACE\Aerospace YWG Scrap Parts Logbook\scrap_logbook.db'
 
 class ScrapLogbook(QMainWindow):
+    progress_signal = pyqtSignal(int)
+
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Cadorath Aerospace Scrap Logbook")
@@ -66,6 +70,7 @@ class ScrapLogbook(QMainWindow):
         self.start_background_processing()
 
     def start_background_processing(self):
+        self.progress_signal.connect(self.update_progress_bar)
         thread = threading.Thread(target=self.search_and_copy_files, args=(source_dir, destination_dir, log_file_path))
         thread.start()
 
@@ -151,7 +156,17 @@ class ScrapLogbook(QMainWindow):
         self.lbl_record_count = QLabel("Total records: 0", self)
         self.status_layout.addWidget(self.lbl_record_count)
         self.status_layout.addStretch(1)
-        self.lbl_email_link = QLabel('<a href="mailto:alex.jessup@cadorath.com?subject=Scrap%20Log%20Issue">Contact Support</a>', self)
+
+        # Add the new label
+        self.lbl_loading = QLabel("Engine Shop Data Loading:", self)
+        self.status_layout.addWidget(self.lbl_loading)
+
+        self.progress_bar = QProgressBar(self)
+        self.progress_bar.setMaximum(100)
+        self.status_layout.addWidget(self.progress_bar)
+
+        self.lbl_email_link = QLabel(
+            '<a href="mailto:alex.jessup@cadorath.com?subject=Scrap%20Log%20Issue">Contact Support</a>', self)
         self.lbl_email_link.setOpenExternalLinks(True)
         self.status_layout.addWidget(self.lbl_email_link)
 
@@ -176,39 +191,34 @@ class ScrapLogbook(QMainWindow):
         self.table_widget.sortItems(logicalIndex, self.sort_order)
 
     def initialize_db(self):
-        conn = sqlite3.connect(db_file_path)
-        cursor = conn.cursor()
-        cursor.execute('''
-            CREATE TABLE IF NOT EXISTS scrap_logbook (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                date TEXT,
-                wo TEXT,
-                part_number TEXT,
-                part_description TEXT,
-                serial_number TEXT,
-                initials TEXT,
-                remarks TEXT,
-                source TEXT
-            )
-        ''')
-        conn.commit()
-        conn.close()
+        with sqlite3.connect(db_file_path) as conn:
+            cursor = conn.cursor()
+            cursor.execute('''
+                CREATE TABLE IF NOT EXISTS scrap_logbook (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    date TEXT,
+                    wo TEXT,
+                    part_number TEXT,
+                    part_description TEXT,
+                    serial_number TEXT,
+                    initials TEXT,
+                    remarks TEXT,
+                    source TEXT
+                )
+            ''')
 
     def fetch_part_numbers(self):
-        conn = sqlite3.connect(db_file_path)
-        cursor = conn.cursor()
-        cursor.execute('SELECT DISTINCT part_number FROM scrap_logbook')
-        part_numbers = [row[0] for row in cursor.fetchall()]
-        conn.close()
-        return part_numbers
+        with sqlite3.connect(db_file_path) as conn:
+            cursor = conn.cursor()
+            cursor.execute('SELECT DISTINCT part_number FROM scrap_logbook')
+            return [row[0] for row in cursor.fetchall()]
 
     def fetch_part_description(self, part_number):
-        conn = sqlite3.connect(db_file_path)
-        cursor = conn.cursor()
-        cursor.execute('SELECT part_description FROM scrap_logbook WHERE part_number = ?', (part_number,))
-        result = cursor.fetchone()
-        conn.close()
-        return result[0] if result else ""
+        with sqlite3.connect(db_file_path) as conn:
+            cursor = conn.cursor()
+            cursor.execute('SELECT part_description FROM scrap_logbook WHERE part_number = ?', (part_number,))
+            result = cursor.fetchone()
+            return result[0] if result else ""
 
     def update_part_description(self):
         part_number = self.entry_part_number.text().strip()
@@ -246,14 +256,12 @@ class ScrapLogbook(QMainWindow):
         part_description = self.entry_part_description.text().strip()
         remarks = self.entry_remarks.text().strip()
 
-        conn = sqlite3.connect(db_file_path)
-        cursor = conn.cursor()
-        cursor.execute('''
-            INSERT INTO scrap_logbook (date, source, wo, part_number, part_description, serial_number, initials, remarks)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        ''', (date_time, source, wo, part_number, part_description, serial_number, initials, remarks))
-        conn.commit()
-        conn.close()
+        with sqlite3.connect(db_file_path) as conn:
+            cursor = conn.cursor()
+            cursor.execute('''
+                INSERT INTO scrap_logbook (date, source, wo, part_number, part_description, serial_number, initials, remarks)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            ''', (date_time, source, wo, part_number, part_description, serial_number, initials, remarks))
 
         self.load_data()
         QMessageBox.information(self, "Success", "Data submitted successfully.")
@@ -264,19 +272,18 @@ class ScrapLogbook(QMainWindow):
 
     def filter_data(self):
         selected_source = self.combo_filter.currentText()
-        conn = sqlite3.connect(db_file_path)
-        if selected_source == "All":
-            query = '''
-                SELECT date, source, wo, part_number, part_description, serial_number, initials, remarks
-                FROM scrap_logbook ORDER BY date DESC
-            '''
-        else:
-            query = '''
-                SELECT date, source, wo, part_number, part_description, serial_number, initials, remarks
-                FROM scrap_logbook WHERE source = ? ORDER BY date DESC
-            '''
-        df = pd.read_sql_query(query, conn, params=(selected_source,) if selected_source != "All" else ())
-        conn.close()
+        query = '''
+            SELECT date, source, wo, part_number, part_description, serial_number, initials, remarks
+            FROM scrap_logbook
+        '''
+        params = []
+        if selected_source != "All":
+            query += " WHERE source = ?"
+            params.append(selected_source)
+        query += " ORDER BY date DESC"
+
+        with sqlite3.connect(db_file_path) as conn:
+            df = pd.read_sql_query(query, conn, params=params)
 
         self.table_widget.setRowCount(len(df))
         self.table_widget.setColumnCount(len(df.columns))
@@ -307,11 +314,10 @@ class ScrapLogbook(QMainWindow):
         self.update_record_count()
 
     def update_record_count(self):
-        conn = sqlite3.connect(db_file_path)
-        cursor = conn.cursor()
-        cursor.execute('SELECT COUNT(*) FROM scrap_logbook')
-        count = cursor.fetchone()[0]
-        conn.close()
+        with sqlite3.connect(db_file_path) as conn:
+            cursor = conn.cursor()
+            cursor.execute('SELECT COUNT(*) FROM scrap_logbook')
+            count = cursor.fetchone()[0]
         self.lbl_record_count.setText(f"Total records: {count}")
 
     def clear_form(self):
@@ -331,23 +337,21 @@ class ScrapLogbook(QMainWindow):
         os.makedirs(destination_dir, exist_ok=True)
 
     def create_table_if_not_exists(self):
-        conn = sqlite3.connect(db_file_path)
-        cursor = conn.cursor()
-        cursor.execute('''
-            CREATE TABLE IF NOT EXISTS scrap_logbook (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                date TEXT,
-                wo TEXT,
-                part_number TEXT,
-                part_description TEXT,
-                serial_number TEXT,
-                initials TEXT,
-                remarks TEXT,
-                source TEXT
-            )
-        ''')
-        conn.commit()
-        conn.close()
+        with sqlite3.connect(db_file_path) as conn:
+            cursor = conn.cursor()
+            cursor.execute('''
+                CREATE TABLE IF NOT EXISTS scrap_logbook (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    date TEXT,
+                    wo TEXT,
+                    part_number TEXT,
+                    part_description TEXT,
+                    serial_number TEXT,
+                    initials TEXT,
+                    remarks TEXT,
+                    source TEXT
+                )
+            ''')
 
     def is_complete(self, file_path):
         try:
@@ -382,25 +386,23 @@ class ScrapLogbook(QMainWindow):
         return []
 
     def insert_data_into_db(self, data):
-        conn = sqlite3.connect(db_file_path)
-        cursor = conn.cursor()
         current_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        for entry in data:
-            cursor.execute('''
+        with sqlite3.connect(db_file_path) as conn:
+            cursor = conn.cursor()
+            cursor.executemany('''
                 INSERT INTO scrap_logbook (date, wo, part_number, part_description, serial_number, remarks, initials, source)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-            ''', (current_date, *entry, 'ES', 'WPG ES'))  # Provide "ES" as the default value for initials and "WPG ES" for source
-        conn.commit()
-        conn.close()
+            ''', [(current_date, *entry, 'ES', 'WPG ES') for entry in data])
 
     def search_and_copy_files(self, source_dir, destination_dir, log_file_path):
+        processed_dirs = set()
         if os.path.exists(log_file_path):
             with open(log_file_path, 'r') as log_file:
                 processed_dirs = set(log_file.read().splitlines())
-        else:
-            processed_dirs = set()
 
         new_processed_dirs = set()
+        total_dirs = sum([len(dirs) for _, dirs, _ in os.walk(source_dir)])
+        scanned_dirs = 0
 
         for root, _, files in os.walk(source_dir):
             folder_name = os.path.basename(root)
@@ -426,9 +428,16 @@ class ScrapLogbook(QMainWindow):
             if copied:
                 new_processed_dirs.add(folder_name)
 
+            scanned_dirs += 1
+            progress = int((scanned_dirs / total_dirs) * 100)
+            self.progress_signal.emit(progress)
+
         with open(log_file_path, 'a') as log_file:
             for dir_name in new_processed_dirs:
                 log_file.write(f"{dir_name}\n")
+
+    def update_progress_bar(self, value):
+        self.progress_bar.setValue(value)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

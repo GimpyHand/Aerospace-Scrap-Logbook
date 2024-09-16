@@ -18,7 +18,7 @@ This project is a PyQt5 application for managing a scrap logbook for Cadorath Ae
 
 2. Run the application:
     ```sh
-    python V3.py
+    python main.py
     ```
 
 ## Project Structure

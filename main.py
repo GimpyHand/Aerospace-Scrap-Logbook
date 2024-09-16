@@ -1,17 +1,19 @@
-import sys
 import os
+import pandas as pd
 import shutil
-import warnings
 import sqlite3
+import sys
 import threading
+import warnings
+from PyQt5.QtCore import Qt, QTimer, pyqtSignal
+from PyQt5.QtGui import QCursor, QIcon
+from PyQt5.QtWidgets import (QApplication, QWidget, QMainWindow, QVBoxLayout, QHBoxLayout, QGridLayout, QLabel,
+                             QLineEdit, QPushButton, QMessageBox, QComboBox, QFrame, QTableWidget, QTableWidgetItem,
+                             QCompleter, QProgressBar)
 from datetime import datetime
 from openpyxl import load_workbook
 from openpyxl.utils.exceptions import InvalidFileException
 from zipfile import BadZipFile
-from PyQt5.QtWidgets import (QApplication, QWidget, QMainWindow, QVBoxLayout, QHBoxLayout, QGridLayout, QLabel, QLineEdit, QPushButton, QMessageBox, QComboBox, QFrame, QTableWidget, QTableWidgetItem, QCompleter)
-from PyQt5.QtCore import Qt, QTimer
-from PyQt5.QtGui import QCursor, QIcon
-import pandas as pd
 
 # Suppress specific warnings
 warnings.filterwarnings("ignore", category=UserWarning, module="openpyxl")
@@ -23,6 +25,8 @@ log_file_path = r'X:\ENGINE SERVICES\Scrap Log Files\processed_directories.log'
 db_file_path = r'X:\AEROSPACE\Aerospace YWG Scrap Parts Logbook\scrap_logbook.db'
 
 class ScrapLogbook(QMainWindow):
+    progress_signal = pyqtSignal(int)
+
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Cadorath Aerospace Scrap Logbook")
@@ -66,6 +70,7 @@ class ScrapLogbook(QMainWindow):
         self.start_background_processing()
 
     def start_background_processing(self):
+        self.progress_signal.connect(self.update_progress_bar)
         thread = threading.Thread(target=self.search_and_copy_files, args=(source_dir, destination_dir, log_file_path))
         thread.start()
 
@@ -151,7 +156,17 @@ class ScrapLogbook(QMainWindow):
         self.lbl_record_count = QLabel("Total records: 0", self)
         self.status_layout.addWidget(self.lbl_record_count)
         self.status_layout.addStretch(1)
-        self.lbl_email_link = QLabel('<a href="mailto:alex.jessup@cadorath.com?subject=Scrap%20Log%20Issue">Contact Support</a>', self)
+
+        # Add the new label
+        self.lbl_loading = QLabel("Engine Shop Data Loading:", self)
+        self.status_layout.addWidget(self.lbl_loading)
+
+        self.progress_bar = QProgressBar(self)
+        self.progress_bar.setMaximum(100)
+        self.status_layout.addWidget(self.progress_bar)
+
+        self.lbl_email_link = QLabel(
+            '<a href="mailto:alex.jessup@cadorath.com?subject=Scrap%20Log%20Issue">Contact Support</a>', self)
         self.lbl_email_link.setOpenExternalLinks(True)
         self.status_layout.addWidget(self.lbl_email_link)
 
@@ -386,6 +401,8 @@ class ScrapLogbook(QMainWindow):
                 processed_dirs = set(log_file.read().splitlines())
 
         new_processed_dirs = set()
+        total_dirs = sum([len(dirs) for _, dirs, _ in os.walk(source_dir)])
+        scanned_dirs = 0
 
         for root, _, files in os.walk(source_dir):
             folder_name = os.path.basename(root)
@@ -411,9 +428,19 @@ class ScrapLogbook(QMainWindow):
             if copied:
                 new_processed_dirs.add(folder_name)
 
+            scanned_dirs += 1
+            progress = int((scanned_dirs / total_dirs) * 100)
+            self.progress_signal.emit(progress)
+
         with open(log_file_path, 'a') as log_file:
             for dir_name in new_processed_dirs:
                 log_file.write(f"{dir_name}\n")
+
+        # Ensure the progress bar is set to 100% when done
+        self.progress_signal.emit(100)
+
+    def update_progress_bar(self, value):
+        self.progress_bar.setValue(value)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
