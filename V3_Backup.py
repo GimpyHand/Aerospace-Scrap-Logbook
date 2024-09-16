@@ -6,7 +6,7 @@ import sys
 import threading
 import warnings
 from PyQt5.QtCore import Qt, QTimer, pyqtSignal
-from PyQt5.QtGui import QCursor, QIcon
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (QApplication, QWidget, QMainWindow, QVBoxLayout, QHBoxLayout, QGridLayout, QLabel,
                              QLineEdit, QPushButton, QMessageBox, QComboBox, QFrame, QTableWidget, QTableWidgetItem,
                              QCompleter, QProgressBar)
@@ -64,7 +64,6 @@ class ScrapLogbook(QMainWindow):
         self.timer.start(30000)
 
         self.ensure_destination_directory()
-        self.create_table_if_not_exists()
 
         # Start background processing
         self.start_background_processing()
@@ -157,7 +156,6 @@ class ScrapLogbook(QMainWindow):
         self.status_layout.addWidget(self.lbl_record_count)
         self.status_layout.addStretch(1)
 
-        # Add the new label
         self.lbl_loading = QLabel("Engine Shop Data Loading:", self)
         self.status_layout.addWidget(self.lbl_loading)
 
@@ -336,23 +334,6 @@ class ScrapLogbook(QMainWindow):
     def ensure_destination_directory(self):
         os.makedirs(destination_dir, exist_ok=True)
 
-    def create_table_if_not_exists(self):
-        with sqlite3.connect(db_file_path) as conn:
-            cursor = conn.cursor()
-            cursor.execute('''
-                CREATE TABLE IF NOT EXISTS scrap_logbook (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    date TEXT,
-                    wo TEXT,
-                    part_number TEXT,
-                    part_description TEXT,
-                    serial_number TEXT,
-                    initials TEXT,
-                    remarks TEXT,
-                    source TEXT
-                )
-            ''')
-
     def is_complete(self, file_path):
         try:
             workbook = load_workbook(file_path, data_only=True)
@@ -435,6 +416,9 @@ class ScrapLogbook(QMainWindow):
         with open(log_file_path, 'a') as log_file:
             for dir_name in new_processed_dirs:
                 log_file.write(f"{dir_name}\n")
+
+        # Ensure the progress bar is set to 100% when done
+        self.progress_signal.emit(100)
 
     def update_progress_bar(self, value):
         self.progress_bar.setValue(value)
