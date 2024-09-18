@@ -4,19 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="603c2501-99fc-4960-963a-5b2d6f29a5ec" name="Changes" comment="Updated complete app for compiling">
-      <change beforePath="$PROJECT_DIR$/.idea/Aerospace Scrap Logbook.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Aerospace Scrap Logbook.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2024-09-10_11_25_a_m__[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_9_10_24,_1_53 PM_[Changes]/Cleaned Scrap Log.ods" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_9_10_24,_1_53 PM_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_9_10_24,_2_55 PM_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_9_10_24,_7_03 AM_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_9_10_24__1_53PM__Changes_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_9_10_24__2_55PM__Changes_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_9_10_24__7_03AM__Changes_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/V3_Backup.py" beforeDir="false" afterPath="$PROJECT_DIR$/V3_Backup.py" afterDir="false" />
+    <list default="true" id="603c2501-99fc-4960-963a-5b2d6f29a5ec" name="Changes" comment="Added protection against SQL Injection, enabled lazy loading, added bypass when Engine Shop directory unavailable so app still runs.">
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -193,7 +181,7 @@
       <workItem from="1726496427443" duration="3388000" />
       <workItem from="1726579545533" duration="608000" />
       <workItem from="1726585356122" duration="692000" />
-      <workItem from="1726659732984" duration="6447000" />
+      <workItem from="1726659732984" duration="7329000" />
     </task>
     <task id="LOCAL-00001" summary="Initial versions of the Scrap Log for Aerospace">
       <option name="closed" value="true" />
@@ -283,7 +271,15 @@
       <option name="project" value="LOCAL" />
       <updated>1726257153514</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Added protection against SQL Injection, enabled lazy loading, added bypass when Engine Shop directory unavailable so app still runs.">
+      <option name="closed" value="true" />
+      <created>1726673911691</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1726673911691</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -309,7 +305,8 @@
     <MESSAGE value="Uploading to work from laptop" />
     <MESSAGE value="Added column sorting by clicking on headers." />
     <MESSAGE value="Updated directories for final launch" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated directories for final launch" />
+    <MESSAGE value="Added protection against SQL Injection, enabled lazy loading, added bypass when Engine Shop directory unavailable so app still runs." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added protection against SQL Injection, enabled lazy loading, added bypass when Engine Shop directory unavailable so app still runs." />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$main_backup.coverage" NAME="main_backup Coverage Results" MODIFIED="1725555483066" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -318,7 +315,7 @@
     <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$test2.coverage" NAME="test2 Coverage Results" MODIFIED="1725476861999" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$pyqt_db_version.coverage" NAME="pyqt_db_version Coverage Results" MODIFIED="1725968707296" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$V3.coverage" NAME="V3 Coverage Results" MODIFIED="1726491080269" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$main.coverage" NAME="main Coverage Results" MODIFIED="1726673715271" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$main.coverage" NAME="main Coverage Results" MODIFIED="1726674609898" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$db_version.coverage" NAME="db_version Coverage Results" MODIFIED="1725890758654" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$db_version_Backup.coverage" NAME="db_version_Backup Coverage Results" MODIFIED="1726055911071" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$testing.coverage" NAME="testing Coverage Results" MODIFIED="1725561394558" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

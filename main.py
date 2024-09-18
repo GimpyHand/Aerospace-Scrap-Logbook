@@ -426,6 +426,7 @@ class ScrapLogbook(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
+    app.setWindowIcon(QIcon('Cadorath-Logo.png'))  # Set the application icon
     window = ScrapLogbook()
     window.show()
     sys.exit(app.exec_())
