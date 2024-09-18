@@ -71,6 +71,7 @@ class ScrapLogbook(QMainWindow):
     def start_background_processing(self):
         self.progress_signal.connect(self.update_progress_bar)
         thread = threading.Thread(target=self.search_and_copy_files, args=(source_dir, destination_dir, log_file_path))
+        thread.daemon = True  # Ensure the thread exits when the main program exits
         thread.start()
 
     def setup_form_elements(self):
@@ -199,11 +200,13 @@ class ScrapLogbook(QMainWindow):
                     part_number TEXT,
                     part_description TEXT,
                     serial_number TEXT,
-                    initials TEXT,
                     remarks TEXT,
+                    initials TEXT,
                     source TEXT
                 )
             ''')
+            cursor.execute('CREATE INDEX IF NOT EXISTS idx_date ON scrap_logbook (date)')
+            cursor.execute('CREATE INDEX IF NOT EXISTS idx_part_number ON scrap_logbook (part_number)')
 
     def fetch_part_numbers(self):
         with sqlite3.connect(db_file_path) as conn:
@@ -257,9 +260,9 @@ class ScrapLogbook(QMainWindow):
         with sqlite3.connect(db_file_path) as conn:
             cursor = conn.cursor()
             cursor.execute('''
-                INSERT INTO scrap_logbook (date, source, wo, part_number, part_description, serial_number, initials, remarks)
+                INSERT INTO scrap_logbook (date, wo, part_number, part_description, serial_number, remarks, initials, source)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-            ''', (date_time, source, wo, part_number, part_description, serial_number, initials, remarks))
+            ''', (date_time, wo, part_number, part_description, serial_number, remarks, initials, source))
 
         self.load_data()
         QMessageBox.information(self, "Success", "Data submitted successfully.")
@@ -291,14 +294,7 @@ class ScrapLogbook(QMainWindow):
 
         for i, row in df.iterrows():
             for j, value in enumerate(row):
-                if j == 0:  # Format the date to exclude the time
-                    value = value.split(' ')[0]
-                item = QTableWidgetItem(str(value))
-                if j in [4, 7]:  # Indexes of "Description" and "Remarks" columns
-                    item.setTextAlignment(Qt.AlignLeft)
-                else:
-                    item.setTextAlignment(Qt.AlignCenter)
-                self.table_widget.setItem(i, j, item)
+                self.table_widget.setItem(i, j, QTableWidgetItem(str(value)))
 
         self.table_widget.setColumnWidth(0, 80)
         self.table_widget.setColumnWidth(1, 80)
@@ -392,26 +388,31 @@ class ScrapLogbook(QMainWindow):
                 print(f"Skipping directory: {folder_name}")  # Print the directory being skipped
                 continue  # Skip already processed directories
 
-            copied = False
-            for file in files:
-                if file.endswith(('.xlsx', '.xlsm')) and not file.startswith('~$'):
-                    file_path = os.path.join(root, file)
-                    if self.is_complete(file_path):
-                        new_file_name = f"{folder_name}_{file}"
-                        destination_path = os.path.join(destination_dir, new_file_name)
-                        shutil.copy(file_path, destination_path)
-                        copied = True
-                        # Extract data and insert into database
-                        data = self.extract_data(file_path)
-                        if data:
-                            self.insert_data_into_db(data)
+            try:
+                copied = False
+                for file in files:
+                    if file.endswith(('.xlsx', '.xlsm')) and not file.startswith('~$'):
+                        file_path = os.path.join(root, file)
+                        if self.is_complete(file_path):
+                            new_file_name = f"{folder_name}_{file}"
+                            destination_path = os.path.join(destination_dir, new_file_name)
+                            shutil.copy(file_path, destination_path)
+                            copied = True
+                            # Extract data and insert into database
+                            data = self.extract_data(file_path)
+                            if data:
+                                self.insert_data_into_db(data)
 
-            if copied:
-                new_processed_dirs.add(folder_name)
+                if copied:
+                    new_processed_dirs.add(folder_name)
 
-            scanned_dirs += 1
-            progress = int((scanned_dirs / total_dirs) * 100)
-            self.progress_signal.emit(progress)
+                scanned_dirs += 1
+                progress = int((scanned_dirs / total_dirs) * 100)
+                self.progress_signal.emit(progress)
+            except PermissionError as e:
+                print(f"PermissionError: {e} - Skipping directory: {folder_name}")
+            except Exception as e:
+                print(f"Error: {e} - Skipping directory: {folder_name}")
 
         with open(log_file_path, 'a') as log_file:
             for dir_name in new_processed_dirs:
