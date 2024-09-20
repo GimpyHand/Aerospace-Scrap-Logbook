@@ -71,7 +71,7 @@ class ScrapLogbook(QMainWindow):
     def start_background_processing(self):
         self.progress_signal.connect(self.update_progress_bar)
         thread = threading.Thread(target=self.search_and_copy_files, args=(source_dir, destination_dir, log_file_path))
-        thread.setDaemon(True)  # Ensure the thread exits when the main program exits
+        thread.daemon = True  # Ensure the thread exits when the main program exits
         thread.start()
 
     def setup_form_elements(self):
@@ -426,6 +426,7 @@ class ScrapLogbook(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
+    app.setWindowIcon(QIcon('Cadorath-Logo.png'))  # Set the application icon
     window = ScrapLogbook()
     window.show()
     sys.exit(app.exec_())
