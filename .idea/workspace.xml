@@ -4,31 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="603c2501-99fc-4960-963a-5b2d6f29a5ec" name="Changes" comment="Added protection against SQL Injection, enabled lazy loading, added bypass when Engine Shop directory unavailable so app still runs.">
-      <change afterPath="$PROJECT_DIR$/tests/test_scrap_logbook.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_9_13_24,_11_45 AM_[Changes]1/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_9_13_24,_11_57 AM_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_9_13_24__11_45AM__Changes_1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_9_13_24__11_57AM__Changes_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2024-09-10_11_25_a_m___Changes_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2024-09-11_6_54_a_m__[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2024-09-11_6_54_a_m___Changes_-CADO-LT94.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2024-09-11_6_54_a_m___Changes_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2024-09-11_6_57_a_m__[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2024-09-11_6_57_a_m___Changes_-CADO-LT94.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2024-09-11_6_57_a_m___Changes_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2024-09-12_2_14_p_m__[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2024-09-12_2_14_p_m___Changes_-CADO-LT94.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2024-09-12_2_14_p_m___Changes_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_9_12_24,_12_39 PM_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_9_12_24__12_39PM__Changes_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_9_13_24,_11_25 AM_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_9_13_24__11_25AM__Changes_.xml" beforeDir="false" />
+    <list default="true" id="603c2501-99fc-4960-963a-5b2d6f29a5ec" name="Changes" comment="Added threadlocking and WAL for concurrent database access with SQLite3">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2024-09-13_1_28_p_m__[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2024-09-13_1_28_p_m___Changes_-CADO-LT94.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2024-09-13_1_28_p_m___Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/V3_Backup-CADO-LT94.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/V3_Backup.py" beforeDir="false" afterPath="$PROJECT_DIR$/V3_Backup.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main-CADO-LT94.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -173,8 +153,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-PY-242.22855.92" />
-        <option value="bundled-python-sdk-b068d85d1acf-399fe30bd8c1-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-242.22855.92" />
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-PY-242.23339.19" />
+        <option value="bundled-python-sdk-0029f7779945-399fe30bd8c1-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-242.23339.19" />
       </set>
     </attachedChunks>
   </component>
@@ -209,7 +189,14 @@
       <workItem from="1726659732984" duration="8149000" />
       <workItem from="1726762151963" duration="3181000" />
       <workItem from="1726833853310" duration="2536000" />
-      <workItem from="1726854812754" duration="1192000" />
+      <workItem from="1726854812754" duration="1720000" />
+      <workItem from="1727091671620" duration="6443000" />
+      <workItem from="1727110927713" duration="2117000" />
+      <workItem from="1727114194071" duration="274000" />
+      <workItem from="1727196962932" duration="33000" />
+      <workItem from="1727197010742" duration="175000" />
+      <workItem from="1727359897195" duration="8710000" />
+      <workItem from="1727436899764" duration="45000" />
     </task>
     <task id="LOCAL-00001" summary="Initial versions of the Scrap Log for Aerospace">
       <option name="closed" value="true" />
@@ -315,7 +302,15 @@
       <option name="project" value="LOCAL" />
       <updated>1726675482648</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Added threadlocking and WAL for concurrent database access with SQLite3">
+      <option name="closed" value="true" />
+      <created>1726856113459</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1726856113459</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -342,13 +337,14 @@
     <MESSAGE value="Added column sorting by clicking on headers." />
     <MESSAGE value="Updated directories for final launch" />
     <MESSAGE value="Added protection against SQL Injection, enabled lazy loading, added bypass when Engine Shop directory unavailable so app still runs." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added protection against SQL Injection, enabled lazy loading, added bypass when Engine Shop directory unavailable so app still runs." />
+    <MESSAGE value="Added threadlocking and WAL for concurrent database access with SQLite3" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added threadlocking and WAL for concurrent database access with SQLite3" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$V3_Backup.coverage" NAME="V3_Backup Coverage Results" MODIFIED="1726662416997" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$V1.coverage" NAME="V1 Coverage Results" MODIFIED="1725974246643" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$test2.coverage" NAME="test2 Coverage Results" MODIFIED="1725476861999" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$main.coverage" NAME="main Coverage Results" MODIFIED="1726855674396" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$main.coverage" NAME="main Coverage Results" MODIFIED="1727368130335" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$db_version_Backup.coverage" NAME="db_version_Backup Coverage Results" MODIFIED="1726055911071" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$testing.coverage" NAME="testing Coverage Results" MODIFIED="1725561394558" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$file_collector.coverage" NAME="file_collector Coverage Results" MODIFIED="1726238779363" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

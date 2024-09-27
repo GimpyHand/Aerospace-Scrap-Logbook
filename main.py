@@ -32,6 +32,10 @@ db_file_path = r'X:\AEROSPACE\Aerospace YWG Scrap Parts Logbook\scrap_logbook.db
 
 db_lock = threading.Lock()
 
+def enable_wal_mode(db_file_path):
+    with sqlite3.connect(db_file_path) as conn:
+        conn.execute('PRAGMA journal_mode=WAL;')
+
 class ScrapLogbook(QMainWindow):
     progress_signal = pyqtSignal(int)
 
@@ -436,6 +440,7 @@ class ScrapLogbook(QMainWindow):
         self.progress_bar.setValue(value)
 
 if __name__ == "__main__":
+    enable_wal_mode(db_file_path)  # Enable WAL mode
     app = QApplication(sys.argv)
     app.setWindowIcon(QIcon('Cadorath-Logo.png'))
     window = ScrapLogbook()
