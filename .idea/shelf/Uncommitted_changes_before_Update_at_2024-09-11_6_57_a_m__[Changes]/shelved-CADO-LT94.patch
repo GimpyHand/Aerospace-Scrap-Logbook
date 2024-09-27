@@ -1,0 +1,1264 @@
+Index: .idea/csv-editor.xml
+===================================================================
+diff --git a/.idea/csv-editor.xml b/.idea/csv-editor.xml
+deleted file mode 100644
+--- a/.idea/csv-editor.xml	(revision 11b4ad763f40ac23825f7f2a31bfb0311fa20bf6)
++++ /dev/null	(revision 11b4ad763f40ac23825f7f2a31bfb0311fa20bf6)
+@@ -1,16 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="CsvFileAttributes">
+-    <option name="attributeMap">
+-      <map>
+-        <entry key="/Scrap Parts Numbers + Descriptions.csv">
+-          <value>
+-            <Attribute>
+-              <option name="separator" value="," />
+-            </Attribute>
+-          </value>
+-        </entry>
+-      </map>
+-    </option>
+-  </component>
+-</project>
+\ No newline at end of file
+Index: V1_Backup.py
+===================================================================
+diff --git a/V1_Backup.py b/V1_Backup.py
+deleted file mode 100644
+--- a/V1_Backup.py	(revision 11b4ad763f40ac23825f7f2a31bfb0311fa20bf6)
++++ /dev/null	(revision 11b4ad763f40ac23825f7f2a31bfb0311fa20bf6)
+@@ -1,234 +0,0 @@
+-import tkinter as tk
+-from tkinter import messagebox
+-import pandas as pd
+-from datetime import datetime
+-import os
+-import webbrowser
+-
+-# Path to the new scrap CSV file
+-csv_file_path = r'X:\AEROSPACE\Aerospace YWG Scrap Parts Logbook\scrap_logbook.csv'
+-
+-# Function to submit data to the CSV file
+-def submit_data():
+-    # Get values from the form
+-    date = entry_date.get().strip()
+-    initials = entry_initials.get().strip()
+-
+-    # Check if required fields are filled out
+-    if not date or not initials:
+-        missing_fields = []
+-        if not date:
+-            missing_fields.append("Date")
+-        if not initials:
+-            missing_fields.append("Initials")
+-
+-        # Show error message box indicating which fields are missing
+-        messagebox.showerror("Missing Information", f"Please fill out the following required field(s): {', '.join(missing_fields)}")
+-        return
+-
+-    # Validate the date format
+-    try:
+-        datetime.strptime(date, '%Y-%m-%d')
+-    except ValueError:
+-        messagebox.showerror("Invalid Date", "Please enter the date in YYYY-MM-DD format.")
+-        return
+-
+-    # If both required fields are filled and valid, proceed with submission
+-    wo = entry_wo.get().strip()
+-    part_number = entry_part_number.get().strip()
+-    part_description = entry_part_description.get().strip()
+-    serial_number = entry_serial_number.get().strip()
+-    remarks = entry_remarks.get().strip()
+-
+-    # Append the data to the CSV file
+-    new_data = {
+-        "Date": date,
+-        "W/O": wo,
+-        "Part Number": part_number,
+-        "Part Description": part_description,
+-        "Serial Number": serial_number,
+-        "Initials": initials,
+-        "Remarks": remarks
+-    }
+-    df = pd.DataFrame([new_data])
+-
+-    if os.path.exists(csv_file_path):
+-        df.to_csv(csv_file_path, mode='a', header=False, index=False)
+-    else:
+-        df.to_csv(csv_file_path, mode='w', header=True, index=False)
+-
+-    # Refresh the displayed data
+-    load_data()
+-
+-    # Clear the form after submission without prompt
+-    entry_date.delete(0, tk.END)
+-    entry_wo.delete(0, tk.END)
+-    entry_part_number.delete(0, tk.END)
+-    entry_part_description.delete(0, tk.END)
+-    entry_serial_number.delete(0, tk.END)
+-    entry_initials.delete(0, tk.END)
+-    entry_remarks.delete(0, tk.END)
+-
+-# Function to clear the form with confirmation
+-def clear_form():
+-    if messagebox.askyesno("Clear Form", "Are you sure you want to clear the form?"):
+-        entry_date.delete(0, tk.END)
+-        entry_wo.delete(0, tk.END)
+-        entry_part_number.delete(0, tk.END)
+-        entry_part_description.delete(0, tk.END)
+-        entry_serial_number.delete(0, tk.END)
+-        entry_initials.delete(0, tk.END)
+-        entry_remarks.delete(0, tk.END)
+-
+-# Function to load and display the last 20 records from the CSV file
+-def load_data():
+-    if os.path.exists(csv_file_path):
+-        df = pd.read_csv(csv_file_path)
+-
+-        # Clear the current table display
+-        for widget in table_frame.winfo_children():
+-            widget.destroy()
+-
+-        # Define column widths (modify these values as needed)
+-        column_widths = {
+-            'Date': 120,
+-            'W/O': 80,
+-            'Part Number': 150,
+-            'Part Description': 300,
+-            'Serial Number': 120,
+-            'Initials': 80,
+-            'Remarks': 475
+-        }
+-
+-        # Display the table headers with bold text
+-        for i, col in enumerate(df.columns):
+-            header = tk.Label(table_frame, text=col, borderwidth=1, relief="solid", bg='lightblue', anchor='center', padx=5, pady=5, font=('Arial', 12, 'bold'))
+-            header.grid(row=0, column=i, sticky="nsew")
+-            table_frame.grid_columnconfigure(i, minsize=column_widths.get(col, 100))  # Set minimum column width
+-
+-        # Display the table data
+-        for i, row in df.iterrows():
+-            for j, value in enumerate(row):
+-                color = 'white' if i % 2 == 0 else 'lightgrey'
+-                cell = tk.Label(table_frame, text=value, borderwidth=1, relief="solid", bg=color, anchor='center', padx=5, pady=5, wraplength=column_widths[df.columns[j]])
+-                cell.grid(row=i + 1, column=j, sticky="nsew")
+-
+-        # Adjust row and column weights to make sure the table expands
+-        for i in range(len(df.columns)):
+-            table_frame.grid_columnconfigure(i, weight=1)
+-        table_frame.grid_rowconfigure(0, weight=1)
+-
+-        # Update status bar with the number of records
+-        num_records = len(df)
+-        lbl_record_count.config(text=f"# of records: {num_records}")
+-
+-# Function to insert the current date
+-def insert_current_date():
+-    current_date = datetime.now().strftime('%Y-%m-%d')
+-    entry_date.delete(0, tk.END)
+-    entry_date.insert(0, current_date)
+-
+-# Function to open the mailto link
+-def open_mailto():
+-    webbrowser.open('mailto:alex.jessup@cadorath.com?subject=Scrap%20Log%20Issue')
+-
+-# Setup the GUI window
+-root = tk.Tk()
+-root.title("Cadorath Aerospace Scrap Logbook")
+-root.geometry('1360x768') # Set the initial window size
+-root.minsize(1360, 768)  # Set minimum window size to the initial size
+-root.maxsize(1360, 768)  # Set maximum window size to the initial size
+-
+-# Create a frame for the form and buttons
+-form_frame = tk.Frame(root)
+-form_frame.grid(row=0, column=0, sticky="nsew")
+-
+-# Create and place form labels and entries with centered text
+-tk.Label(form_frame, text="*Date (YYYY-MM-DD):", fg="red").grid(row=0, column=0, padx=5, pady=5, sticky='e')
+-entry_date = tk.Entry(form_frame, justify='center')
+-entry_date.grid(row=0, column=1, padx=5, pady=5, sticky='ew')
+-
+-# Create and place the date button
+-btn_date = tk.Button(form_frame, text="📅", command=insert_current_date)
+-btn_date.grid(row=0, column=2, padx=5, pady=5, sticky='w')
+-
+-tk.Label(form_frame, text="W/O:").grid(row=1, column=0, padx=5, pady=5, sticky='e')
+-entry_wo = tk.Entry(form_frame, justify='center')
+-entry_wo.grid(row=1, column=1, padx=5, pady=5, sticky='ew')
+-
+-tk.Label(form_frame, text="Part Number:").grid(row=2, column=0, padx=5, pady=5, sticky='e')
+-entry_part_number = tk.Entry(form_frame, justify='center')
+-entry_part_number.grid(row=2, column=1, padx=5, pady=5, sticky='ew')
+-
+-tk.Label(form_frame, text="Part Description:").grid(row=3, column=0, padx=5, pady=5, sticky='e')
+-entry_part_description = tk.Entry(form_frame, justify='center')
+-entry_part_description.grid(row=3, column=1, padx=5, pady=5, sticky='ew')
+-
+-tk.Label(form_frame, text="Serial Number:").grid(row=4, column=0, padx=5, pady=5, sticky='e')
+-entry_serial_number = tk.Entry(form_frame, justify='center')
+-entry_serial_number.grid(row=4, column=1, padx=5, pady=5, sticky='ew')
+-
+-tk.Label(form_frame, text="*Initials:", fg="red").grid(row=5, column=0, padx=5, pady=5, sticky='e')
+-entry_initials = tk.Entry(form_frame, justify='center')
+-entry_initials.grid(row=5, column=1, padx=5, pady=5, sticky='ew')
+-
+-tk.Label(form_frame, text="Remarks:").grid(row=6, column=0, padx=5, pady=5, sticky='e')
+-entry_remarks = tk.Entry(form_frame, justify='center')
+-entry_remarks.grid(row=6, column=1, padx=5, pady=5, sticky='ew')
+-
+-# Create and place buttons
+-btn_submit = tk.Button(form_frame, text="Submit", command=submit_data)
+-btn_submit.grid(row=7, column=0, padx=5, pady=5, sticky='ew')
+-
+-btn_clear = tk.Button(form_frame, text="Clear", command=clear_form)
+-btn_clear.grid(row=7, column=1, padx=5, pady=5, sticky='ew')
+-
+-# Create a scrollable frame for the table
+-scroll_canvas = tk.Canvas(root)
+-scrollbar = tk.Scrollbar(root, orient="vertical", command=scroll_canvas.yview)
+-scroll_frame = tk.Frame(scroll_canvas)
+-
+-# Function to configure scrolling
+-def on_frame_configure(event):
+-    scroll_canvas.configure(scrollregion=scroll_canvas.bbox("all"))
+-
+-scroll_frame.bind("<Configure>", on_frame_configure)
+-
+-# Place the frame inside the canvas and configure scrolling
+-scroll_canvas.create_window((0, 0), window=scroll_frame, anchor="nw")
+-scroll_canvas.grid(row=1, column=0, sticky="nsew")
+-scrollbar.grid(row=1, column=1, sticky="ns")
+-
+-scroll_canvas.config(yscrollcommand=scrollbar.set)
+-
+-# Add a frame for the table to the scrollable frame with padding
+-outer_frame = tk.Frame(scroll_frame, padx=5, pady=5)
+-outer_frame.pack(fill="both", expand=True, padx=5, pady=5)
+-
+-table_frame = tk.Frame(outer_frame)
+-table_frame.pack(fill="both", expand=True)
+-
+-# Create the status bar frame
+-status_frame = tk.Frame(root, bd=1, relief="sunken")
+-status_frame.grid(row=2, column=0, sticky="ew")
+-
+-# Add status bar widgets
+-lbl_record_count = tk.Label(status_frame, text="# of records: 0", anchor='w', padx=5)
+-lbl_record_count.pack(side="left", fill="x", expand=True)
+-
+-lbl_email_link = tk.Label(status_frame, text="Contact Support", fg="blue", cursor="hand2", anchor='e', padx=5)
+-lbl_email_link.pack(side="right", fill="x", expand=True)
+-lbl_email_link.bind("<Button-1>", lambda e: open_mailto())
+-
+-# Load and display the records
+-load_data()
+-
+-# Configure row and column weights for resizing
+-root.grid_rowconfigure(0, weight=1)  # Form frame row
+-root.grid_rowconfigure(1, weight=3)  # Table row
+-root.grid_rowconfigure(2, weight=0)  # Status bar row
+-
+-root.grid_columnconfigure(0, weight=1)  # Main column
+-
+-# Start the GUI event loop
+-root.mainloop()
+\ No newline at end of file
+Index: V2.py
+===================================================================
+diff --git a/V2.py b/V2.py
+deleted file mode 100644
+--- a/V2.py	(revision 11b4ad763f40ac23825f7f2a31bfb0311fa20bf6)
++++ /dev/null	(revision 11b4ad763f40ac23825f7f2a31bfb0311fa20bf6)
+@@ -1,282 +0,0 @@
+-import tkinter as tk
+-from tkinter import messagebox, ttk
+-import pandas as pd
+-from datetime import datetime
+-import os
+-import webbrowser
+-import sqlite3
+-
+-# Path to the SQLite database file
+-db_file_path = r'X:\AEROSPACE\Aerospace YWG Scrap Parts Logbook\scrap_logbook.db'
+-
+-# Function to initialize the database
+-def initialize_db():
+-    conn = sqlite3.connect(db_file_path)
+-    cursor = conn.cursor()
+-    cursor.execute('''
+-        CREATE TABLE IF NOT EXISTS scrap_logbook (
+-            id INTEGER PRIMARY KEY,
+-            date TEXT NOT NULL,
+-            wo TEXT,
+-            part_number TEXT,
+-            part_description TEXT,
+-            serial_number TEXT,
+-            initials TEXT NOT NULL,
+-            remarks TEXT
+-        )
+-    ''')
+-    conn.commit()
+-    conn.close()
+-
+-# Function to submit data to the database
+-def submit_data():
+-    # Get values from the form
+-    date = entry_date.get().strip()
+-    initials = entry_initials.get().strip()
+-
+-    # Check if required fields are filled out
+-    if not date or not initials:
+-        missing_fields = []
+-        if not date:
+-            missing_fields.append("Date")
+-        if not initials:
+-            missing_fields.append("Initials")
+-
+-        # Show error message box indicating which fields are missing
+-        messagebox.showerror("Missing Information", f"Please fill out the following required field(s): {', '.join(missing_fields)}")
+-        return
+-
+-    # Validate the date format
+-    try:
+-        datetime.strptime(date, '%Y-%m-%d')
+-    except ValueError:
+-        messagebox.showerror("Invalid Date", "Please enter the date in YYYY-MM-DD format.")
+-        return
+-
+-    # If both required fields are filled and valid, proceed with submission
+-    wo = entry_wo.get().strip()
+-    part_number = entry_part_number.get().strip()
+-    part_description = entry_part_description.get().strip()
+-    serial_number = entry_serial_number.get().strip()
+-    remarks = entry_remarks.get().strip()
+-
+-    # Insert the data into the database
+-    conn = sqlite3.connect(db_file_path)
+-    cursor = conn.cursor()
+-    cursor.execute('''
+-        INSERT INTO scrap_logbook (date, wo, part_number, part_description, serial_number, initials, remarks)
+-        VALUES (?, ?, ?, ?, ?, ?, ?)
+-    ''', (date, wo, part_number, part_description, serial_number, initials, remarks))
+-    conn.commit()
+-    conn.close()
+-
+-    # Refresh the displayed data
+-    load_data()
+-
+-    # Clear the form after submission without prompt
+-    entry_date.delete(0, tk.END)
+-    entry_wo.delete(0, tk.END)
+-    entry_part_number.delete(0, tk.END)
+-    entry_part_description.delete(0, tk.END)
+-    entry_serial_number.delete(0, tk.END)
+-    entry_initials.delete(0, tk.END)
+-    entry_remarks.delete(0, tk.END)
+-
+-# Function to clear the form with confirmation
+-def clear_form():
+-    if messagebox.askyesno("Clear Form", "Are you sure you want to clear the form?"):
+-        entry_date.delete(0, tk.END)
+-        entry_wo.delete(0, tk.END)
+-        entry_part_number.delete(0, tk.END)
+-        entry_part_description.delete(0, tk.END)
+-        entry_serial_number.delete(0, tk.END)
+-        entry_initials.delete(0, tk.END)
+-        entry_remarks.delete(0, tk.END)
+-
+-# Function to load and display records from the database
+-def load_data(records_to_load=50):
+-    print(f"Loading data... {records_to_load} records")
+-    conn = sqlite3.connect(db_file_path)
+-
+-    # Query to get the total number of records
+-    cursor = conn.cursor()
+-    cursor.execute("SELECT COUNT(*) FROM scrap_logbook")
+-    total_records = cursor.fetchone()[0]
+-
+-    # Determine how many records to load
+-    limit_query = ""
+-    if records_to_load != 'ALL':
+-        limit_query = f"LIMIT {records_to_load}"
+-
+-    # Query to get the records
+-    df = pd.read_sql_query(
+-        f"SELECT date, wo, part_number, part_description, serial_number, initials, remarks FROM scrap_logbook ORDER BY date DESC {limit_query}",
+-        conn)
+-    conn.close()
+-    print(f"Data loaded: {len(df)} rows")
+-
+-    # Clear the current table display
+-    for widget in table_frame.winfo_children():
+-        widget.destroy()
+-
+-    # Define column widths (modify these values as needed)
+-    column_widths = {
+-        'date': 120,
+-        'wo': 80,
+-        'part_number': 150,
+-        'part_description': 300,
+-        'serial_number': 120,
+-        'initials': 80,
+-        'remarks': 475
+-    }
+-
+-    # Display the table headers with bold text
+-    for i, col in enumerate(df.columns):
+-        header = tk.Label(table_frame, text=col, borderwidth=1, relief="solid", bg='lightblue', anchor='center', padx=5, pady=5, font=('Arial', 10, 'bold'))
+-        header.grid(row=0, column=i, sticky="nsew")
+-        table_frame.grid_columnconfigure(i, minsize=column_widths.get(col, 100))  # Set minimum column width
+-
+-    # Load all data
+-    for i, row in df.iterrows():
+-        for j, value in enumerate(row):
+-            color = 'white' if i % 2 == 0 else 'lightgrey'
+-            cell = tk.Label(table_frame, text=value, borderwidth=1, relief="solid", bg=color, anchor='center', padx=5,
+-                            pady=5, wraplength=column_widths[df.columns[j]])
+-            cell.grid(row=i + 1, column=j, sticky="nsew")
+-
+-    # Update status bar with the total number of records
+-    lbl_record_count.config(text=f"Total records: {total_records}")
+-
+-
+-# Function to insert the current date
+-def insert_current_date():
+-    current_date = datetime.now().strftime('%Y-%m-%d')
+-    entry_date.delete(0, tk.END)
+-    entry_date.insert(0, current_date)
+-
+-# Function to handle record selection change
+-def on_records_change(event):
+-    selected_value = record_selection.get()
+-    if selected_value == 'ALL':
+-        load_data('ALL')
+-    else:
+-        load_data(int(selected_value))
+-
+-# Function to open the mailto link
+-def open_mailto():
+-    webbrowser.open('mailto:alex.jessup@cadorath.com?subject=Scrap%20Log%20Issue')
+-
+-# Setup the GUI window
+-root = tk.Tk()
+-root.title("Cadorath Aerospace Scrap Logbook")
+-root.geometry('1360x768')  # Set the initial window size
+-root.minsize(1360, 768)  # Set minimum window size to the initial size
+-root.maxsize(1360, 768)  # Set maximum window size to the initial size
+-
+-# Create a frame for the form and buttons
+-form_frame = tk.Frame(root)
+-form_frame.grid(row=0, column=0, sticky="nsew")
+-
+-# Create a center frame to hold the form elements
+-center_frame = tk.Frame(form_frame)
+-center_frame.grid(row=0, column=0, padx=5, pady=5)
+-
+-# Create and place form labels and entries with centered text
+-tk.Label(center_frame, text="*Date (YYYY-MM-DD):", fg="red").grid(row=0, column=0, padx=5, pady=5, sticky='e')
+-entry_date = tk.Entry(center_frame, justify='center')
+-entry_date.grid(row=0, column=1, padx=5, pady=5, sticky='ew')
+-
+-# Create and place the date button
+-btn_date = tk.Button(center_frame, text="📅", command=insert_current_date)
+-btn_date.grid(row=0, column=2, padx=5, pady=5, sticky='w')
+-
+-tk.Label(center_frame, text="W/O:").grid(row=1, column=0, padx=5, pady=5, sticky='e')
+-entry_wo = tk.Entry(center_frame, justify='center')
+-entry_wo.grid(row=1, column=1, padx=5, pady=5, sticky='ew')
+-
+-tk.Label(center_frame, text="Part Number:").grid(row=2, column=0, padx=5, pady=5, sticky='e')
+-entry_part_number = tk.Entry(center_frame, justify='center')
+-entry_part_number.grid(row=2, column=1, padx=5, pady=5, sticky='ew')
+-
+-tk.Label(center_frame, text="Part Description:").grid(row=3, column=0, padx=5, pady=5, sticky='e')
+-entry_part_description = tk.Entry(center_frame, justify='center')
+-entry_part_description.grid(row=3, column=1, padx=5, pady=5, sticky='ew')
+-
+-tk.Label(center_frame, text="Serial Number:").grid(row=4, column=0, padx=5, pady=5, sticky='e')
+-entry_serial_number = tk.Entry(center_frame, justify='center')
+-entry_serial_number.grid(row=4, column=1, padx=5, pady=5, sticky='ew')
+-
+-tk.Label(center_frame, text="*Initials:", fg="red").grid(row=5, column=0, padx=5, pady=5, sticky='e')
+-entry_initials = tk.Entry(center_frame, justify='center')
+-entry_initials.grid(row=5, column=1, padx=5, pady=5, sticky='ew')
+-
+-tk.Label(center_frame, text="Remarks:").grid(row=6, column=0, padx=5, pady=5, sticky='e')
+-entry_remarks = tk.Entry(center_frame, justify='center')
+-entry_remarks.grid(row=6, column=1, padx=5, pady=5, sticky='ew')
+-
+-# Create and place buttons
+-btn_submit = tk.Button(center_frame, text="Submit", command=submit_data)
+-btn_submit.grid(row=7, column=0, padx=5, pady=5, sticky='ew')
+-
+-btn_clear = tk.Button(center_frame, text="Clear", command=clear_form)
+-btn_clear.grid(row=7, column=1, padx=5, pady=5, sticky='ew')
+-
+-# Configure the form_frame to center the center_frame
+-form_frame.grid_columnconfigure(0, weight=1)
+-form_frame.grid_rowconfigure(0, weight=1)
+-
+-# Create a scrollable frame for the table
+-scroll_canvas = tk.Canvas(root)
+-scrollbar = tk.Scrollbar(root, orient="vertical", command=scroll_canvas.yview)
+-scroll_frame = tk.Frame(scroll_canvas)
+-
+-# Function to configure scrolling
+-def on_frame_configure(event):
+-    scroll_canvas.configure(scrollregion=scroll_canvas.bbox("all"))
+-
+-scroll_frame.bind("<Configure>", on_frame_configure)
+-
+-# Place the frame inside the canvas and configure scrolling
+-scroll_canvas.create_window((0, 0), window=scroll_frame, anchor="nw")
+-scroll_canvas.grid(row=1, column=0, sticky="nsew")
+-scrollbar.grid(row=1, column=1, sticky="ns")
+-
+-scroll_canvas.config(yscrollcommand=scrollbar.set)
+-
+-# Add a frame for the table to the scrollable frame with padding
+-outer_frame = tk.Frame(scroll_frame, padx=5, pady=5)
+-outer_frame.pack(fill="both", expand=True, padx=5, pady=5)
+-
+-table_frame = tk.Frame(outer_frame)
+-table_frame.pack(fill="both", expand=True)
+-
+-# Create the status bar frame
+-status_frame = tk.Frame(root, bd=1, relief="sunken")
+-status_frame.grid(row=2, column=0, sticky="ew")
+-
+-# Add status bar widgets
+-lbl_record_count = tk.Label(status_frame, text="Total records: 0", anchor='w', padx=5)
+-lbl_record_count.pack(side="left", fill="x", expand=True)
+-
+-# Add record selection dropdown
+-record_selection = ttk.Combobox(status_frame, values=[50, 100, 500, 1000, 'ALL'], state="readonly", width=10)
+-record_selection.set(50)  # Set default to 50
+-record_selection.pack(side="left", padx=10)
+-record_selection.bind("<<ComboboxSelected>>", on_records_change)
+-
+-lbl_email_link = tk.Label(status_frame, text="Contact Support", fg="blue", cursor="hand2", anchor='e', padx=5)
+-lbl_email_link.pack(side="right", fill="x", expand=True)
+-lbl_email_link.bind("<Button-1>", lambda e: open_mailto())
+-
+-# Initialize the database and load records
+-initialize_db()
+-load_data()
+-
+-# Configure row and column weights for resizing
+-root.grid_rowconfigure(0, weight=1)  # Form frame row
+-root.grid_rowconfigure(1, weight=3)  # Table row
+-root.grid_rowconfigure(2, weight=0)  # Status bar row
+-root.grid_columnconfigure(0, weight=1)  # Main column
+-
+-# Start the GUI event loop
+-root.mainloop()
+Index: V1.py
+===================================================================
+diff --git a/V1.py b/V1.py
+deleted file mode 100644
+--- a/V1.py	(revision 11b4ad763f40ac23825f7f2a31bfb0311fa20bf6)
++++ /dev/null	(revision 11b4ad763f40ac23825f7f2a31bfb0311fa20bf6)
+@@ -1,270 +0,0 @@
+-import tkinter as tk
+-from tkinter import messagebox
+-import pandas as pd
+-from datetime import datetime
+-import os
+-import webbrowser
+-
+-# Path to the new scrap CSV file
+-csv_file_path = r'X:\AEROSPACE\Aerospace YWG Scrap Parts Logbook\scrap_logbook.csv'
+-
+-# Number of records to load at a time
+-LOAD_BATCH_SIZE = 50
+-
+-# Function to submit data to the CSV file
+-def submit_data():
+-    # Get values from the form
+-    date = entry_date.get().strip()
+-    initials = entry_initials.get().strip()
+-
+-    # Check if required fields are filled out
+-    if not date or not initials:
+-        missing_fields = []
+-        if not date:
+-            missing_fields.append("Date")
+-        if not initials:
+-            missing_fields.append("Initials")
+-
+-        # Show error message box indicating which fields are missing
+-        messagebox.showerror("Missing Information", f"Please fill out the following required field(s): {', '.join(missing_fields)}")
+-        return
+-
+-    # Validate the date format
+-    try:
+-        datetime.strptime(date, '%Y-%m-%d')
+-    except ValueError:
+-        messagebox.showerror("Invalid Date", "Please enter the date in YYYY-MM-DD format.")
+-        return
+-
+-    # If both required fields are filled and valid, proceed with submission
+-    wo = entry_wo.get().strip()
+-    part_number = entry_part_number.get().strip()
+-    part_description = entry_part_description.get().strip()
+-    serial_number = entry_serial_number.get().strip()
+-    remarks = entry_remarks.get().strip()
+-
+-    # Append the data to the CSV file
+-    new_data = {
+-        "Date": date,
+-        "W/O": wo,
+-        "Part Number": part_number,
+-        "Part Description": part_description,
+-        "Serial Number": serial_number,
+-        "Initials": initials,
+-        "Remarks": remarks
+-    }
+-    df = pd.DataFrame([new_data])
+-
+-    if os.path.exists(csv_file_path):
+-        df.to_csv(csv_file_path, mode='a', header=False, index=False)
+-    else:
+-        df.to_csv(csv_file_path, mode='w', header=True, index=False)
+-
+-    # Refresh the displayed data
+-    load_data()
+-
+-    # Clear the form after submission without prompt
+-    entry_date.delete(0, tk.END)
+-    entry_wo.delete(0, tk.END)
+-    entry_part_number.delete(0, tk.END)
+-    entry_part_description.delete(0, tk.END)
+-    entry_serial_number.delete(0, tk.END)
+-    entry_initials.delete(0, tk.END)
+-    entry_remarks.delete(0, tk.END)
+-
+-# Function to clear the form with confirmation
+-def clear_form():
+-    if messagebox.askyesno("Clear Form", "Are you sure you want to clear the form?"):
+-        entry_date.delete(0, tk.END)
+-        entry_wo.delete(0, tk.END)
+-        entry_part_number.delete(0, tk.END)
+-        entry_part_description.delete(0, tk.END)
+-        entry_serial_number.delete(0, tk.END)
+-        entry_initials.delete(0, tk.END)
+-        entry_remarks.delete(0, tk.END)
+-
+-# Function to load and display records from the CSV file
+-def load_data():
+-    global df, current_position
+-    print("Loading data...")
+-    if os.path.exists(csv_file_path):
+-        df = pd.read_csv(csv_file_path)
+-        print(f"Data loaded: {len(df)} rows")
+-
+-        # Clear the current table display
+-        for widget in table_frame.winfo_children():
+-            widget.destroy()
+-
+-        # Define column widths (modify these values as needed)
+-        column_widths = {
+-            'Date': 120,
+-            'W/O': 80,
+-            'Part Number': 150,
+-            'Part Description': 300,
+-            'Serial Number': 120,
+-            'Initials': 80,
+-            'Remarks': 475
+-        }
+-
+-        # Display the table headers with bold text
+-        for i, col in enumerate(df.columns):
+-            header = tk.Label(table_frame, text=col, borderwidth=1, relief="solid", bg='lightblue', anchor='center', padx=5, pady=5, font=('Arial', 10, 'bold'))
+-            header.grid(row=0, column=i, sticky="nsew")
+-            table_frame.grid_columnconfigure(i, minsize=column_widths.get(col, 100))  # Set minimum column width
+-
+-        # Initialize current position
+-        current_position = 0
+-
+-        # Load the initial batch of data
+-        load_more_data()
+-
+-        # Update status bar with the number of records
+-        num_records = len(df)
+-        lbl_record_count.config(text=f"# of records: {num_records}")
+-
+-# Function to load more data as the user scrolls
+-def load_more_data():
+-    global current_position
+-    if current_position >= len(df):
+-        return
+-
+-    # Define column widths (modify these values as needed)
+-    column_widths = {
+-        'Date': 120,
+-        'W/O': 80,
+-        'Part Number': 150,
+-        'Part Description': 300,
+-        'Serial Number': 120,
+-        'Initials': 80,
+-        'Remarks': 475
+-    }
+-
+-    # Load the next batch of data
+-    end_position = min(current_position + LOAD_BATCH_SIZE, len(df))
+-    for i, row in df.iloc[current_position:end_position].iterrows():
+-        for j, value in enumerate(row):
+-            color = 'white' if i % 2 == 0 else 'lightgrey'
+-            cell = tk.Label(table_frame, text=value, borderwidth=1, relief="solid", bg=color, anchor='center', padx=5, pady=5, wraplength=column_widths[df.columns[j]])
+-            cell.grid(row=i + 1, column=j, sticky="nsew")
+-
+-    current_position = end_position
+-    table_frame.update_idletasks()
+-    scroll_canvas.config(scrollregion=scroll_canvas.bbox("all"))
+-
+-# Function to insert the current date
+-def insert_current_date():
+-    current_date = datetime.now().strftime('%Y-%m-%d')
+-    entry_date.delete(0, tk.END)
+-    entry_date.insert(0, current_date)
+-
+-# Function to open the mailto link
+-def open_mailto():
+-    webbrowser.open('mailto:alex.jessup@cadorath.com?subject=Scrap%20Log%20Issue')
+-
+-# Setup the GUI window
+-root = tk.Tk()
+-root.title("Cadorath Aerospace Scrap Logbook")
+-root.geometry('1360x768') # Set the initial window size
+-root.minsize(1360, 768)  # Set minimum window size to the initial size
+-root.maxsize(1360, 768)  # Set maximum window size to the initial size
+-
+-# Create a frame for the form and buttons
+-form_frame = tk.Frame(root)
+-form_frame.grid(row=0, column=0, sticky="nsew")
+-
+-# Create and place form labels and entries with centered text
+-tk.Label(form_frame, text="*Date (YYYY-MM-DD):", fg="red").grid(row=0, column=0, padx=5, pady=5, sticky='e')
+-entry_date = tk.Entry(form_frame, justify='center')
+-entry_date.grid(row=0, column=1, padx=5, pady=5, sticky='ew')
+-
+-# Create and place the date button
+-btn_date = tk.Button(form_frame, text="📅", command=insert_current_date)
+-btn_date.grid(row=0, column=2, padx=5, pady=5, sticky='w')
+-
+-tk.Label(form_frame, text="W/O:").grid(row=1, column=0, padx=5, pady=5, sticky='e')
+-entry_wo = tk.Entry(form_frame, justify='center')
+-entry_wo.grid(row=1, column=1, padx=5, pady=5, sticky='ew')
+-
+-tk.Label(form_frame, text="Part Number:").grid(row=2, column=0, padx=5, pady=5, sticky='e')
+-entry_part_number = tk.Entry(form_frame, justify='center')
+-entry_part_number.grid(row=2, column=1, padx=5, pady=5, sticky='ew')
+-
+-tk.Label(form_frame, text="Part Description:").grid(row=3, column=0, padx=5, pady=5, sticky='e')
+-entry_part_description = tk.Entry(form_frame, justify='center')
+-entry_part_description.grid(row=3, column=1, padx=5, pady=5, sticky='ew')
+-
+-tk.Label(form_frame, text="Serial Number:").grid(row=4, column=0, padx=5, pady=5, sticky='e')
+-entry_serial_number = tk.Entry(form_frame, justify='center')
+-entry_serial_number.grid(row=4, column=1, padx=5, pady=5, sticky='ew')
+-
+-tk.Label(form_frame, text="*Initials:", fg="red").grid(row=5, column=0, padx=5, pady=5, sticky='e')
+-entry_initials = tk.Entry(form_frame, justify='center')
+-entry_initials.grid(row=5, column=1, padx=5, pady=5, sticky='ew')
+-
+-tk.Label(form_frame, text="Remarks:").grid(row=6, column=0, padx=5, pady=5, sticky='e')
+-entry_remarks = tk.Entry(form_frame, justify='center')
+-entry_remarks.grid(row=6, column=1, padx=5, pady=5, sticky='ew')
+-
+-# Create and place buttons
+-btn_submit = tk.Button(form_frame, text="Submit", command=submit_data)
+-btn_submit.grid(row=7, column=0, padx=5, pady=5, sticky='ew')
+-
+-btn_clear = tk.Button(form_frame, text="Clear", command=clear_form)
+-btn_clear.grid(row=7, column=1, padx=5, pady=5, sticky='ew')
+-
+-# Create a scrollable frame for the table
+-scroll_canvas = tk.Canvas(root)
+-scrollbar = tk.Scrollbar(root, orient="vertical", command=scroll_canvas.yview)
+-scroll_frame = tk.Frame(scroll_canvas)
+-
+-# Function to configure scrolling
+-def on_frame_configure(event):
+-    scroll_canvas.configure(scrollregion=scroll_canvas.bbox("all"))
+-
+-scroll_frame.bind("<Configure>", on_frame_configure)
+-
+-# Function to detect scrolling and load more data
+-def on_scroll(event):
+-    if scroll_canvas.yview()[1] >= 0.9:  # If scrolled to 90% of the view
+-        load_more_data()
+-
+-scroll_canvas.bind_all("<MouseWheel>", on_scroll)
+-
+-# Place the frame inside the canvas and configure scrolling
+-scroll_canvas.create_window((0, 0), window=scroll_frame, anchor="nw")
+-scroll_canvas.grid(row=1, column=0, sticky="nsew")
+-scrollbar.grid(row=1, column=1, sticky="ns")
+-
+-scroll_canvas.config(yscrollcommand=scrollbar.set)
+-
+-# Add a frame for the table to the scrollable frame with padding
+-outer_frame = tk.Frame(scroll_frame, padx=5, pady=5)
+-outer_frame.pack(fill="both", expand=True, padx=5, pady=5)
+-
+-table_frame = tk.Frame(outer_frame)
+-table_frame.pack(fill="both", expand=True)
+-
+-# Create the status bar frame
+-status_frame = tk.Frame(root, bd=1, relief="sunken")
+-status_frame.grid(row=2, column=0, sticky="ew")
+-
+-# Add status bar widgets
+-lbl_record_count = tk.Label(status_frame, text="# of records: 0", anchor='w', padx=5)
+-lbl_record_count.pack(side="left", fill="x", expand=True)
+-
+-lbl_email_link = tk.Label(status_frame, text="Contact Support", fg="blue", cursor="hand2", anchor='e', padx=5)
+-lbl_email_link.pack(side="right", fill="x", expand=True)
+-lbl_email_link.bind("<Button-1>", lambda e: open_mailto())
+-
+-# Load and display the records
+-load_data()
+-
+-# Configure row and column weights for resizing
+-root.grid_rowconfigure(0, weight=1)  # Form frame row
+-root.grid_rowconfigure(1, weight=3)  # Table row
+-root.grid_rowconfigure(2, weight=0)  # Status bar row
+-
+-root.grid_columnconfigure(0, weight=1)  # Main column
+-
+-# Start the GUI event loop
+-root.mainloop()
+Index: V2_Backup.py
+===================================================================
+diff --git a/V2_Backup.py b/V2_Backup.py
+deleted file mode 100644
+--- a/V2_Backup.py	(revision 11b4ad763f40ac23825f7f2a31bfb0311fa20bf6)
++++ /dev/null	(revision 11b4ad763f40ac23825f7f2a31bfb0311fa20bf6)
+@@ -1,282 +0,0 @@
+-import tkinter as tk
+-from tkinter import messagebox, ttk
+-import pandas as pd
+-from datetime import datetime
+-import os
+-import webbrowser
+-import sqlite3
+-
+-# Path to the SQLite database file
+-db_file_path = r'X:\AEROSPACE\Aerospace YWG Scrap Parts Logbook\scrap_logbook.db'
+-
+-# Function to initialize the database
+-def initialize_db():
+-    conn = sqlite3.connect(db_file_path)
+-    cursor = conn.cursor()
+-    cursor.execute('''
+-        CREATE TABLE IF NOT EXISTS scrap_logbook (
+-            id INTEGER PRIMARY KEY,
+-            date TEXT NOT NULL,
+-            wo TEXT,
+-            part_number TEXT,
+-            part_description TEXT,
+-            serial_number TEXT,
+-            initials TEXT NOT NULL,
+-            remarks TEXT
+-        )
+-    ''')
+-    conn.commit()
+-    conn.close()
+-
+-# Function to submit data to the database
+-def submit_data():
+-    # Get values from the form
+-    date = entry_date.get().strip()
+-    initials = entry_initials.get().strip()
+-
+-    # Check if required fields are filled out
+-    if not date or not initials:
+-        missing_fields = []
+-        if not date:
+-            missing_fields.append("Date")
+-        if not initials:
+-            missing_fields.append("Initials")
+-
+-        # Show error message box indicating which fields are missing
+-        messagebox.showerror("Missing Information", f"Please fill out the following required field(s): {', '.join(missing_fields)}")
+-        return
+-
+-    # Validate the date format
+-    try:
+-        datetime.strptime(date, '%Y-%m-%d')
+-    except ValueError:
+-        messagebox.showerror("Invalid Date", "Please enter the date in YYYY-MM-DD format.")
+-        return
+-
+-    # If both required fields are filled and valid, proceed with submission
+-    wo = entry_wo.get().strip()
+-    part_number = entry_part_number.get().strip()
+-    part_description = entry_part_description.get().strip()
+-    serial_number = entry_serial_number.get().strip()
+-    remarks = entry_remarks.get().strip()
+-
+-    # Insert the data into the database
+-    conn = sqlite3.connect(db_file_path)
+-    cursor = conn.cursor()
+-    cursor.execute('''
+-        INSERT INTO scrap_logbook (date, wo, part_number, part_description, serial_number, initials, remarks)
+-        VALUES (?, ?, ?, ?, ?, ?, ?)
+-    ''', (date, wo, part_number, part_description, serial_number, initials, remarks))
+-    conn.commit()
+-    conn.close()
+-
+-    # Refresh the displayed data
+-    load_data()
+-
+-    # Clear the form after submission without prompt
+-    entry_date.delete(0, tk.END)
+-    entry_wo.delete(0, tk.END)
+-    entry_part_number.delete(0, tk.END)
+-    entry_part_description.delete(0, tk.END)
+-    entry_serial_number.delete(0, tk.END)
+-    entry_initials.delete(0, tk.END)
+-    entry_remarks.delete(0, tk.END)
+-
+-# Function to clear the form with confirmation
+-def clear_form():
+-    if messagebox.askyesno("Clear Form", "Are you sure you want to clear the form?"):
+-        entry_date.delete(0, tk.END)
+-        entry_wo.delete(0, tk.END)
+-        entry_part_number.delete(0, tk.END)
+-        entry_part_description.delete(0, tk.END)
+-        entry_serial_number.delete(0, tk.END)
+-        entry_initials.delete(0, tk.END)
+-        entry_remarks.delete(0, tk.END)
+-
+-# Function to load and display records from the database
+-def load_data(records_to_load=50):
+-    print(f"Loading data... {records_to_load} records")
+-    conn = sqlite3.connect(db_file_path)
+-
+-    # Query to get the total number of records
+-    cursor = conn.cursor()
+-    cursor.execute("SELECT COUNT(*) FROM scrap_logbook")
+-    total_records = cursor.fetchone()[0]
+-
+-    # Determine how many records to load
+-    limit_query = ""
+-    if records_to_load != 'ALL':
+-        limit_query = f"LIMIT {records_to_load}"
+-
+-    # Query to get the records
+-    df = pd.read_sql_query(
+-        f"SELECT date, wo, part_number, part_description, serial_number, initials, remarks FROM scrap_logbook ORDER BY date DESC {limit_query}",
+-        conn)
+-    conn.close()
+-    print(f"Data loaded: {len(df)} rows")
+-
+-    # Clear the current table display
+-    for widget in table_frame.winfo_children():
+-        widget.destroy()
+-
+-    # Define column widths (modify these values as needed)
+-    column_widths = {
+-        'date': 120,
+-        'wo': 80,
+-        'part_number': 150,
+-        'part_description': 300,
+-        'serial_number': 120,
+-        'initials': 80,
+-        'remarks': 475
+-    }
+-
+-    # Display the table headers with bold text
+-    for i, col in enumerate(df.columns):
+-        header = tk.Label(table_frame, text=col, borderwidth=1, relief="solid", bg='lightblue', anchor='center', padx=5, pady=5, font=('Arial', 10, 'bold'))
+-        header.grid(row=0, column=i, sticky="nsew")
+-        table_frame.grid_columnconfigure(i, minsize=column_widths.get(col, 100))  # Set minimum column width
+-
+-    # Load all data
+-    for i, row in df.iterrows():
+-        for j, value in enumerate(row):
+-            color = 'white' if i % 2 == 0 else 'lightgrey'
+-            cell = tk.Label(table_frame, text=value, borderwidth=1, relief="solid", bg=color, anchor='center', padx=5,
+-                            pady=5, wraplength=column_widths[df.columns[j]])
+-            cell.grid(row=i + 1, column=j, sticky="nsew")
+-
+-    # Update status bar with the total number of records
+-    lbl_record_count.config(text=f"Total records: {total_records}")
+-
+-
+-# Function to insert the current date
+-def insert_current_date():
+-    current_date = datetime.now().strftime('%Y-%m-%d')
+-    entry_date.delete(0, tk.END)
+-    entry_date.insert(0, current_date)
+-
+-# Function to handle record selection change
+-def on_records_change(event):
+-    selected_value = record_selection.get()
+-    if selected_value == 'ALL':
+-        load_data('ALL')
+-    else:
+-        load_data(int(selected_value))
+-
+-# Function to open the mailto link
+-def open_mailto():
+-    webbrowser.open('mailto:alex.jessup@cadorath.com?subject=Scrap%20Log%20Issue')
+-
+-# Setup the GUI window
+-root = tk.Tk()
+-root.title("Cadorath Aerospace Scrap Logbook")
+-root.geometry('1360x768')  # Set the initial window size
+-root.minsize(1360, 768)  # Set minimum window size to the initial size
+-root.maxsize(1360, 768)  # Set maximum window size to the initial size
+-
+-# Create a frame for the form and buttons
+-form_frame = tk.Frame(root)
+-form_frame.grid(row=0, column=0, sticky="nsew")
+-
+-# Create a center frame to hold the form elements
+-center_frame = tk.Frame(form_frame)
+-center_frame.grid(row=0, column=0, padx=5, pady=5)
+-
+-# Create and place form labels and entries with centered text
+-tk.Label(center_frame, text="*Date (YYYY-MM-DD):", fg="red").grid(row=0, column=0, padx=5, pady=5, sticky='e')
+-entry_date = tk.Entry(center_frame, justify='center')
+-entry_date.grid(row=0, column=1, padx=5, pady=5, sticky='ew')
+-
+-# Create and place the date button
+-btn_date = tk.Button(center_frame, text="📅", command=insert_current_date)
+-btn_date.grid(row=0, column=2, padx=5, pady=5, sticky='w')
+-
+-tk.Label(center_frame, text="W/O:").grid(row=1, column=0, padx=5, pady=5, sticky='e')
+-entry_wo = tk.Entry(center_frame, justify='center')
+-entry_wo.grid(row=1, column=1, padx=5, pady=5, sticky='ew')
+-
+-tk.Label(center_frame, text="Part Number:").grid(row=2, column=0, padx=5, pady=5, sticky='e')
+-entry_part_number = tk.Entry(center_frame, justify='center')
+-entry_part_number.grid(row=2, column=1, padx=5, pady=5, sticky='ew')
+-
+-tk.Label(center_frame, text="Part Description:").grid(row=3, column=0, padx=5, pady=5, sticky='e')
+-entry_part_description = tk.Entry(center_frame, justify='center')
+-entry_part_description.grid(row=3, column=1, padx=5, pady=5, sticky='ew')
+-
+-tk.Label(center_frame, text="Serial Number:").grid(row=4, column=0, padx=5, pady=5, sticky='e')
+-entry_serial_number = tk.Entry(center_frame, justify='center')
+-entry_serial_number.grid(row=4, column=1, padx=5, pady=5, sticky='ew')
+-
+-tk.Label(center_frame, text="*Initials:", fg="red").grid(row=5, column=0, padx=5, pady=5, sticky='e')
+-entry_initials = tk.Entry(center_frame, justify='center')
+-entry_initials.grid(row=5, column=1, padx=5, pady=5, sticky='ew')
+-
+-tk.Label(center_frame, text="Remarks:").grid(row=6, column=0, padx=5, pady=5, sticky='e')
+-entry_remarks = tk.Entry(center_frame, justify='center')
+-entry_remarks.grid(row=6, column=1, padx=5, pady=5, sticky='ew')
+-
+-# Create and place buttons
+-btn_submit = tk.Button(center_frame, text="Submit", command=submit_data)
+-btn_submit.grid(row=7, column=0, padx=5, pady=5, sticky='ew')
+-
+-btn_clear = tk.Button(center_frame, text="Clear", command=clear_form)
+-btn_clear.grid(row=7, column=1, padx=5, pady=5, sticky='ew')
+-
+-# Configure the form_frame to center the center_frame
+-form_frame.grid_columnconfigure(0, weight=1)
+-form_frame.grid_rowconfigure(0, weight=1)
+-
+-# Create a scrollable frame for the table
+-scroll_canvas = tk.Canvas(root)
+-scrollbar = tk.Scrollbar(root, orient="vertical", command=scroll_canvas.yview)
+-scroll_frame = tk.Frame(scroll_canvas)
+-
+-# Function to configure scrolling
+-def on_frame_configure(event):
+-    scroll_canvas.configure(scrollregion=scroll_canvas.bbox("all"))
+-
+-scroll_frame.bind("<Configure>", on_frame_configure)
+-
+-# Place the frame inside the canvas and configure scrolling
+-scroll_canvas.create_window((0, 0), window=scroll_frame, anchor="nw")
+-scroll_canvas.grid(row=1, column=0, sticky="nsew")
+-scrollbar.grid(row=1, column=1, sticky="ns")
+-
+-scroll_canvas.config(yscrollcommand=scrollbar.set)
+-
+-# Add a frame for the table to the scrollable frame with padding
+-outer_frame = tk.Frame(scroll_frame, padx=5, pady=5)
+-outer_frame.pack(fill="both", expand=True, padx=5, pady=5)
+-
+-table_frame = tk.Frame(outer_frame)
+-table_frame.pack(fill="both", expand=True)
+-
+-# Create the status bar frame
+-status_frame = tk.Frame(root, bd=1, relief="sunken")
+-status_frame.grid(row=2, column=0, sticky="ew")
+-
+-# Add status bar widgets
+-lbl_record_count = tk.Label(status_frame, text="Total records: 0", anchor='w', padx=5)
+-lbl_record_count.pack(side="left", fill="x", expand=True)
+-
+-# Add record selection dropdown
+-record_selection = ttk.Combobox(status_frame, values=[50, 100, 500, 1000, 'ALL'], state="readonly", width=10)
+-record_selection.set(50)  # Set default to 50
+-record_selection.pack(side="left", padx=10)
+-record_selection.bind("<<ComboboxSelected>>", on_records_change)
+-
+-lbl_email_link = tk.Label(status_frame, text="Contact Support", fg="blue", cursor="hand2", anchor='e', padx=5)
+-lbl_email_link.pack(side="right", fill="x", expand=True)
+-lbl_email_link.bind("<Button-1>", lambda e: open_mailto())
+-
+-# Initialize the database and load records
+-initialize_db()
+-load_data()
+-
+-# Configure row and column weights for resizing
+-root.grid_rowconfigure(0, weight=1)  # Form frame row
+-root.grid_rowconfigure(1, weight=3)  # Table row
+-root.grid_rowconfigure(2, weight=0)  # Status bar row
+-root.grid_columnconfigure(0, weight=1)  # Main column
+-
+-# Start the GUI event loop
+-root.mainloop()
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"603c2501-99fc-4960-963a-5b2d6f29a5ec\" name=\"Changes\" comment=\"Uploading to work from laptop\">\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Cleaned Scrap Log.ods\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/Cleaned Scrap Log.ods\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Python Script\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"GitHubPullRequestSearchHistory\">{\r\n  &quot;lastFilter&quot;: {\r\n    &quot;state&quot;: &quot;OPEN&quot;,\r\n    &quot;assignee&quot;: &quot;GimpyHand&quot;\r\n  }\r\n}</component>\r\n  <component name=\"GithubPullRequestsUISettings\">{\r\n  &quot;selectedUrlAndAccountId&quot;: {\r\n    &quot;url&quot;: &quot;https://github.com/GimpyHand/Aerospace-Scrap-Logbook.git&quot;,\r\n    &quot;accountId&quot;: &quot;14b1df0d-ece0-40cd-956f-91c54fd64b85&quot;\r\n  }\r\n}</component>\r\n  <component name=\"ProblemsViewState\">\r\n    <option name=\"selectedTabId\" value=\"ProjectErrors\" />\r\n  </component>\r\n  <component name=\"ProjectColorInfo\">{\r\n  &quot;associatedIndex&quot;: 0\r\n}</component>\r\n  <component name=\"ProjectId\" id=\"2lZ3tWJE3wtj5zJXnyMqORbchpy\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\">\r\n    <OptionsSetting value=\"false\" id=\"Update\" />\r\n    <ConfirmationsSetting value=\"2\" id=\"Add\" />\r\n  </component>\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;Python.V1.executor&quot;: &quot;Run&quot;,\r\n    &quot;Python.V3.executor&quot;: &quot;Run&quot;,\r\n    &quot;Python.V3_Backup.executor&quot;: &quot;Run&quot;,\r\n    &quot;Python.db_version.executor&quot;: &quot;Run&quot;,\r\n    &quot;Python.db_version_Backup.executor&quot;: &quot;Run&quot;,\r\n    &quot;Python.main.executor&quot;: &quot;Run&quot;,\r\n    &quot;Python.main_backup.executor&quot;: &quot;Run&quot;,\r\n    &quot;Python.test2.executor&quot;: &quot;Run&quot;,\r\n    &quot;Python.testing.executor&quot;: &quot;Run&quot;,\r\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\r\n    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,\r\n    &quot;com.codeium.enabled&quot;: &quot;true&quot;,\r\n    &quot;git-widget-placeholder&quot;: &quot;master&quot;,\r\n    &quot;last_opened_file_path&quot;: &quot;C:/Users/alex.jessup/OneDrive - Cadorath Group/Documents/GitHub/Aerospace-Scrap-Logbook&quot;,\r\n    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,\r\n    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,\r\n    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,\r\n    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,\r\n    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,\r\n    &quot;run.code.analysis.last.selected.profile&quot;: &quot;aDefault&quot;,\r\n    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,\r\n    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;\r\n  }\r\n}</component>\r\n  <component name=\"QodanaReportsService\">\r\n    <option name=\"descriptions\">\r\n      <ReportDescription localRun=\"true\" path=\"/tmp/qodana_output/qodana.sarif.json\" reportGuid=\"fcfccaa1-730a-4d33-9770-8a3b95dcdb77\" reportId=\"Aerospace Scrap Logbook/qodana/2024-09-04\" />\r\n    </option>\r\n  </component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"CopyFile.RECENT_KEYS\">\r\n      <recent name=\"C:\\Users\\alex.jessup\\OneDrive - Cadorath Group\\Documents\\GitHub\\Aerospace-Scrap-Logbook\" />\r\n      <recent name=\"$PROJECT_DIR$\" />\r\n    </key>\r\n    <key name=\"MoveFile.RECENT_KEYS\">\r\n      <recent name=\"C:\\Users\\alex.jessup\\OneDrive - Cadorath Group\\Documents\\GitHub\\Aerospace-Scrap-Logbook\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"RunManager\">\r\n    <configuration name=\"V3\" type=\"PythonConfigurationType\" factoryName=\"Python\" nameIsGenerated=\"true\">\r\n      <module name=\"Aerospace Scrap Logbook\" />\r\n      <option name=\"ENV_FILES\" value=\"\" />\r\n      <option name=\"INTERPRETER_OPTIONS\" value=\"\" />\r\n      <option name=\"PARENT_ENVS\" value=\"true\" />\r\n      <envs>\r\n        <env name=\"PYTHONUNBUFFERED\" value=\"1\" />\r\n      </envs>\r\n      <option name=\"SDK_HOME\" value=\"\" />\r\n      <option name=\"SDK_NAME\" value=\"Python 3.12\" />\r\n      <option name=\"WORKING_DIRECTORY\" value=\"$PROJECT_DIR$\" />\r\n      <option name=\"IS_MODULE_SDK\" value=\"false\" />\r\n      <option name=\"ADD_CONTENT_ROOTS\" value=\"true\" />\r\n      <option name=\"ADD_SOURCE_ROOTS\" value=\"true\" />\r\n      <EXTENSION ID=\"PythonCoverageRunConfigurationExtension\" runner=\"coverage.py\" />\r\n      <option name=\"SCRIPT_NAME\" value=\"$PROJECT_DIR$/V3.py\" />\r\n      <option name=\"PARAMETERS\" value=\"\" />\r\n      <option name=\"SHOW_COMMAND_LINE\" value=\"false\" />\r\n      <option name=\"EMULATE_TERMINAL\" value=\"false\" />\r\n      <option name=\"MODULE_MODE\" value=\"false\" />\r\n      <option name=\"REDIRECT_INPUT\" value=\"false\" />\r\n      <option name=\"INPUT_FILE\" value=\"\" />\r\n      <method v=\"2\" />\r\n    </configuration>\r\n    <configuration name=\"db_version_Backup\" type=\"PythonConfigurationType\" factoryName=\"Python\" nameIsGenerated=\"true\">\r\n      <module name=\"Aerospace Scrap Logbook\" />\r\n      <option name=\"ENV_FILES\" value=\"\" />\r\n      <option name=\"INTERPRETER_OPTIONS\" value=\"\" />\r\n      <option name=\"PARENT_ENVS\" value=\"true\" />\r\n      <envs>\r\n        <env name=\"PYTHONUNBUFFERED\" value=\"1\" />\r\n      </envs>\r\n      <option name=\"SDK_HOME\" value=\"\" />\r\n      <option name=\"WORKING_DIRECTORY\" value=\"$PROJECT_DIR$\" />\r\n      <option name=\"IS_MODULE_SDK\" value=\"false\" />\r\n      <option name=\"ADD_CONTENT_ROOTS\" value=\"true\" />\r\n      <option name=\"ADD_SOURCE_ROOTS\" value=\"true\" />\r\n      <EXTENSION ID=\"PythonCoverageRunConfigurationExtension\" runner=\"coverage.py\" />\r\n      <option name=\"SCRIPT_NAME\" value=\"$PROJECT_DIR$/db_version_Backup.py\" />\r\n      <option name=\"PARAMETERS\" value=\"\" />\r\n      <option name=\"SHOW_COMMAND_LINE\" value=\"false\" />\r\n      <option name=\"EMULATE_TERMINAL\" value=\"false\" />\r\n      <option name=\"MODULE_MODE\" value=\"false\" />\r\n      <option name=\"REDIRECT_INPUT\" value=\"false\" />\r\n      <option name=\"INPUT_FILE\" value=\"\" />\r\n      <method v=\"2\" />\r\n    </configuration>\r\n  </component>\r\n  <component name=\"SharedIndexes\">\r\n    <attachedChunks>\r\n      <set>\r\n        <option value=\"bundled-js-predefined-d6986cc7102b-7c0b70fcd90d-JavaScript-PY-242.21829.153\" />\r\n        <option value=\"bundled-python-sdk-464836ebc622-b74155a9e76b-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-242.21829.153\" />\r\n      </set>\r\n    </attachedChunks>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"603c2501-99fc-4960-963a-5b2d6f29a5ec\" name=\"Changes\" comment=\"\" />\r\n      <created>1725373985706</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1725373985706</updated>\r\n      <workItem from=\"1725373987057\" duration=\"6304000\" />\r\n      <workItem from=\"1725386475189\" duration=\"2959000\" />\r\n      <workItem from=\"1725389848598\" duration=\"1458000\" />\r\n      <workItem from=\"1725449345640\" duration=\"12985000\" />\r\n      <workItem from=\"1725536284305\" duration=\"3500000\" />\r\n      <workItem from=\"1725542404407\" duration=\"853000\" />\r\n      <workItem from=\"1725543274111\" duration=\"16193000\" />\r\n      <workItem from=\"1725881745764\" duration=\"3174000\" />\r\n      <workItem from=\"1725896981435\" duration=\"16447000\" />\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"Initial versions of the Scrap Log for Aerospace\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1725389614417</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1725389614417</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"Added colorization of required fields, requirement missing alert box, and testing of copying XLSM files in order to work of copies instead of orignals\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1725477860207</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1725477860207</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00003\" summary=\"Switched from working wit ha CSV file into working with a db file as it is more reliable and faster to load.\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1725565192339</created>\r\n      <option name=\"number\" value=\"00003\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1725565192339</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00004\" summary=\"Switched from working wit ha CSV file into working with a db file as it is more reliable and faster to load.\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1725565210185</created>\r\n      <option name=\"number\" value=\"00004\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1725565210185</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00005\" summary=\"Updated DB version\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1725897023155</created>\r\n      <option name=\"number\" value=\"00005\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00005\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1725897023156</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00006\" summary=\"Added old scrap log data to be added to db file\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1725969625791</created>\r\n      <option name=\"number\" value=\"00006\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00006\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1725969625791</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00007\" summary=\"Uploading to work from laptop\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1725994384766</created>\r\n      <option name=\"number\" value=\"00007\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00007\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1725994384766</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"8\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"Initial versions of the Scrap Log for Aerospace\" />\r\n    <MESSAGE value=\"Added colorization of required fields, requirement missing alert box, and testing of copying XLSM files in order to work of copies instead of orignals\" />\r\n    <MESSAGE value=\"Switched from working wit ha CSV file into working with a db file as it is more reliable and faster to load.\" />\r\n    <MESSAGE value=\"Updated DB version\" />\r\n    <MESSAGE value=\"Added old scrap log data to be added to db file\" />\r\n    <MESSAGE value=\"Uploading to work from laptop\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"Uploading to work from laptop\" />\r\n  </component>\r\n  <component name=\"com.intellij.coverage.CoverageDataManagerImpl\">\r\n    <SUITE FILE_PATH=\"coverage/Aerospace_Scrap_Logbook$main_backup.coverage\" NAME=\"main_backup Coverage Results\" MODIFIED=\"1725555483066\" SOURCE_PROVIDER=\"com.intellij.coverage.DefaultCoverageFileProvider\" RUNNER=\"coverage.py\" COVERAGE_BY_TEST_ENABLED=\"false\" COVERAGE_TRACING_ENABLED=\"false\" WORKING_DIRECTORY=\"$PROJECT_DIR$\" />\r\n    <SUITE FILE_PATH=\"coverage/Aerospace_Scrap_Logbook$V3_Backup.coverage\" NAME=\"V3_Backup Coverage Results\" MODIFIED=\"1725996442811\" SOURCE_PROVIDER=\"com.intellij.coverage.DefaultCoverageFileProvider\" RUNNER=\"coverage.py\" COVERAGE_BY_TEST_ENABLED=\"false\" COVERAGE_TRACING_ENABLED=\"false\" WORKING_DIRECTORY=\"$PROJECT_DIR$\" />\r\n    <SUITE FILE_PATH=\"coverage/Aerospace_Scrap_Logbook$V1.coverage\" NAME=\"V1 Coverage Results\" MODIFIED=\"1725974246643\" SOURCE_PROVIDER=\"com.intellij.coverage.DefaultCoverageFileProvider\" RUNNER=\"coverage.py\" COVERAGE_BY_TEST_ENABLED=\"false\" COVERAGE_TRACING_ENABLED=\"false\" WORKING_DIRECTORY=\"$PROJECT_DIR$\" />\r\n    <SUITE FILE_PATH=\"coverage/Aerospace_Scrap_Logbook$test2.coverage\" NAME=\"test2 Coverage Results\" MODIFIED=\"1725476861999\" SOURCE_PROVIDER=\"com.intellij.coverage.DefaultCoverageFileProvider\" RUNNER=\"coverage.py\" COVERAGE_BY_TEST_ENABLED=\"false\" COVERAGE_TRACING_ENABLED=\"false\" WORKING_DIRECTORY=\"$PROJECT_DIR$\" />\r\n    <SUITE FILE_PATH=\"coverage/Aerospace_Scrap_Logbook$pyqt_db_version.coverage\" NAME=\"pyqt_db_version Coverage Results\" MODIFIED=\"1725968707296\" SOURCE_PROVIDER=\"com.intellij.coverage.DefaultCoverageFileProvider\" RUNNER=\"coverage.py\" COVERAGE_BY_TEST_ENABLED=\"false\" COVERAGE_TRACING_ENABLED=\"false\" WORKING_DIRECTORY=\"$PROJECT_DIR$\" />\r\n    <SUITE FILE_PATH=\"coverage/Aerospace_Scrap_Logbook$V3.coverage\" NAME=\"V3 Coverage Results\" MODIFIED=\"1725992877596\" SOURCE_PROVIDER=\"com.intellij.coverage.DefaultCoverageFileProvider\" RUNNER=\"coverage.py\" COVERAGE_BY_TEST_ENABLED=\"false\" COVERAGE_TRACING_ENABLED=\"false\" WORKING_DIRECTORY=\"$PROJECT_DIR$\" />\r\n    <SUITE FILE_PATH=\"coverage/Aerospace_Scrap_Logbook$main.coverage\" NAME=\"main Coverage Results\" MODIFIED=\"1725563854938\" SOURCE_PROVIDER=\"com.intellij.coverage.DefaultCoverageFileProvider\" RUNNER=\"coverage.py\" COVERAGE_BY_TEST_ENABLED=\"false\" COVERAGE_TRACING_ENABLED=\"false\" WORKING_DIRECTORY=\"$PROJECT_DIR$\" />\r\n    <SUITE FILE_PATH=\"coverage/Aerospace_Scrap_Logbook$db_version.coverage\" NAME=\"db_version Coverage Results\" MODIFIED=\"1725890758654\" SOURCE_PROVIDER=\"com.intellij.coverage.DefaultCoverageFileProvider\" RUNNER=\"coverage.py\" COVERAGE_BY_TEST_ENABLED=\"false\" COVERAGE_TRACING_ENABLED=\"false\" WORKING_DIRECTORY=\"$PROJECT_DIR$\" />\r\n    <SUITE FILE_PATH=\"coverage/Aerospace_Scrap_Logbook$db_version_Backup.coverage\" NAME=\"db_version_Backup Coverage Results\" MODIFIED=\"1725968665247\" SOURCE_PROVIDER=\"com.intellij.coverage.DefaultCoverageFileProvider\" RUNNER=\"coverage.py\" COVERAGE_BY_TEST_ENABLED=\"false\" COVERAGE_TRACING_ENABLED=\"false\" WORKING_DIRECTORY=\"$PROJECT_DIR$\" />\r\n    <SUITE FILE_PATH=\"coverage/Aerospace_Scrap_Logbook$testing.coverage\" NAME=\"testing Coverage Results\" MODIFIED=\"1725561394558\" SOURCE_PROVIDER=\"com.intellij.coverage.DefaultCoverageFileProvider\" RUNNER=\"coverage.py\" COVERAGE_BY_TEST_ENABLED=\"false\" COVERAGE_TRACING_ENABLED=\"false\" WORKING_DIRECTORY=\"$PROJECT_DIR$\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 11b4ad763f40ac23825f7f2a31bfb0311fa20bf6)
++++ b/.idea/workspace.xml	(date 1726055753847)
+@@ -5,8 +5,13 @@
+   </component>
+   <component name="ChangeListManager">
+     <list default="true" id="603c2501-99fc-4960-963a-5b2d6f29a5ec" name="Changes" comment="Uploading to work from laptop">
++      <change beforePath="$PROJECT_DIR$/.idea/csv-editor.xml" beforeDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/Cleaned Scrap Log.ods" beforeDir="false" afterPath="$PROJECT_DIR$/Cleaned Scrap Log.ods" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/V1.py" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/V1_Backup.py" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/V2.py" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/V2_Backup.py" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/testing.py" beforeDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -21,6 +26,11 @@
+     </option>
+   </component>
+   <component name="Git.Settings">
++    <option name="RECENT_BRANCH_BY_REPOSITORY">
++      <map>
++        <entry key="$PROJECT_DIR$" value="master" />
++      </map>
++    </option>
+     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+   </component>
+   <component name="GitHubPullRequestSearchHistory">{
+@@ -50,32 +60,32 @@
+     <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
+   </component>
+-  <component name="PropertiesComponent">{
+-  &quot;keyToString&quot;: {
+-    &quot;Python.V1.executor&quot;: &quot;Run&quot;,
+-    &quot;Python.V3.executor&quot;: &quot;Run&quot;,
+-    &quot;Python.V3_Backup.executor&quot;: &quot;Run&quot;,
+-    &quot;Python.db_version.executor&quot;: &quot;Run&quot;,
+-    &quot;Python.db_version_Backup.executor&quot;: &quot;Run&quot;,
+-    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+-    &quot;Python.main_backup.executor&quot;: &quot;Run&quot;,
+-    &quot;Python.test2.executor&quot;: &quot;Run&quot;,
+-    &quot;Python.testing.executor&quot;: &quot;Run&quot;,
+-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+-    &quot;com.codeium.enabled&quot;: &quot;true&quot;,
+-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+-    &quot;last_opened_file_path&quot;: &quot;C:/Users/alex.jessup/OneDrive - Cadorath Group/Documents/GitHub/Aerospace-Scrap-Logbook&quot;,
+-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;aDefault&quot;,
+-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
++  <component name="PropertiesComponent"><![CDATA[{
++  "keyToString": {
++    "Python.V1.executor": "Run",
++    "Python.V3.executor": "Run",
++    "Python.V3_Backup.executor": "Run",
++    "Python.db_version.executor": "Run",
++    "Python.db_version_Backup.executor": "Run",
++    "Python.main.executor": "Run",
++    "Python.main_backup.executor": "Run",
++    "Python.test2.executor": "Run",
++    "Python.testing.executor": "Run",
++    "RunOnceActivity.ShowReadmeOnStart": "true",
++    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
++    "com.codeium.enabled": "true",
++    "git-widget-placeholder": "draft",
++    "last_opened_file_path": "C:/Users/alex.jessup/OneDrive - Cadorath Group/Documents/GitHub/Aerospace-Scrap-Logbook",
++    "node.js.detected.package.eslint": "true",
++    "node.js.detected.package.tslint": "true",
++    "node.js.selected.package.eslint": "(autodetect)",
++    "node.js.selected.package.tslint": "(autodetect)",
++    "nodejs_package_manager_path": "npm",
++    "run.code.analysis.last.selected.profile": "aDefault",
++    "settings.editor.selected.configurable": "preferences.pluginManager",
++    "vue.rearranger.settings.migration": "true"
+   }
+-}</component>
++}]]></component>
+   <component name="QodanaReportsService">
+     <option name="descriptions">
+       <ReportDescription localRun="true" path="/tmp/qodana_output/qodana.sarif.json" reportGuid="fcfccaa1-730a-4d33-9770-8a3b95dcdb77" reportId="Aerospace Scrap Logbook/qodana/2024-09-04" />
+@@ -90,7 +100,7 @@
+       <recent name="C:\Users\alex.jessup\OneDrive - Cadorath Group\Documents\GitHub\Aerospace-Scrap-Logbook" />
+     </key>
+   </component>
+-  <component name="RunManager">
++  <component name="RunManager" selected="Python.db_version_Backup">
+     <configuration name="V3" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+       <module name="Aerospace Scrap Logbook" />
+       <option name="ENV_FILES" value="" />
+@@ -163,7 +173,9 @@
+       <workItem from="1725542404407" duration="853000" />
+       <workItem from="1725543274111" duration="16193000" />
+       <workItem from="1725881745764" duration="3174000" />
+-      <workItem from="1725896981435" duration="16447000" />
++      <workItem from="1725896981435" duration="16500000" />
++      <workItem from="1726054972838" duration="431000" />
++      <workItem from="1726055414206" duration="335000" />
+     </task>
+     <task id="LOCAL-00001" summary="Initial versions of the Scrap Log for Aerospace">
+       <option name="closed" value="true" />
+@@ -221,7 +233,15 @@
+       <option name="project" value="LOCAL" />
+       <updated>1725994384766</updated>
+     </task>
+-    <option name="localTasksCounter" value="8" />
++    <task id="LOCAL-00008" summary="Uploading to work from laptop">
++      <option name="closed" value="true" />
++      <created>1725997888226</created>
++      <option name="number" value="00008" />
++      <option name="presentableId" value="LOCAL-00008" />
++      <option name="project" value="LOCAL" />
++      <updated>1725997888226</updated>
++    </task>
++    <option name="localTasksCounter" value="9" />
+     <servers />
+   </component>
+   <component name="TypeScriptGeneratedFilesManager">
+@@ -253,7 +273,7 @@
+     <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$V1.coverage" NAME="V1 Coverage Results" MODIFIED="1725974246643" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+     <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$test2.coverage" NAME="test2 Coverage Results" MODIFIED="1725476861999" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+     <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$pyqt_db_version.coverage" NAME="pyqt_db_version Coverage Results" MODIFIED="1725968707296" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+-    <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$V3.coverage" NAME="V3 Coverage Results" MODIFIED="1725992877596" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
++    <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$V3.coverage" NAME="V3 Coverage Results" MODIFIED="1726055202584" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+     <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$main.coverage" NAME="main Coverage Results" MODIFIED="1725563854938" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+     <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$db_version.coverage" NAME="db_version Coverage Results" MODIFIED="1725890758654" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+     <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$db_version_Backup.coverage" NAME="db_version_Backup Coverage Results" MODIFIED="1725968665247" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+diff --git a/testing.py b/testing.py
+deleted file mode 100644
