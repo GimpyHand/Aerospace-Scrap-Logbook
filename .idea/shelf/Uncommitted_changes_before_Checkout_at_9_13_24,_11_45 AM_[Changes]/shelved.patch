@@ -1,0 +1,158 @@
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"AutoImportSettings\">\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\n  </component>\n  <component name=\"ChangeListManager\">\n    <list default=\"true\" id=\"603c2501-99fc-4960-963a-5b2d6f29a5ec\" name=\"Changes\" comment=\"Added column sorting by clicking on headers.\">\n      <change afterPath=\"$PROJECT_DIR$/file_collector.py\" afterDir=\"false\" />\n      <change afterPath=\"$PROJECT_DIR$/file_collector_Backup.py\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_9_6_24,_6_22 AM_[Changes]/shelved.patch\" beforeDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_9_6_24__6_22AM__Changes_.xml\" beforeDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/V3.py\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/V3.py\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/V3_Backup.py\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/V3_Backup.py\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/scrap_logbook.db\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/scrap_logbook.db\" afterDir=\"false\" />\n    </list>\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\n  </component>\n  <component name=\"FileTemplateManagerImpl\">\n    <option name=\"RECENT_TEMPLATES\">\n      <list>\n        <option value=\"Python Script\" />\n      </list>\n    </option>\n  </component>\n  <component name=\"Git.Settings\">\n    <option name=\"RECENT_BRANCH_BY_REPOSITORY\">\n      <map>\n        <entry key=\"$PROJECT_DIR$\" value=\"draft\" />\n      </map>\n    </option>\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\n  </component>\n  <component name=\"GitHubPullRequestSearchHistory\">{\n  &quot;lastFilter&quot;: {\n    &quot;state&quot;: &quot;OPEN&quot;,\n    &quot;assignee&quot;: &quot;GimpyHand&quot;\n  }\n}</component>\n  <component name=\"GithubPullRequestsUISettings\"><![CDATA[{\n  \"selectedUrlAndAccountId\": {\n    \"url\": \"https://github.com/GimpyHand/Aerospace-Scrap-Logbook.git\",\n    \"accountId\": \"14b1df0d-ece0-40cd-956f-91c54fd64b85\"\n  }\n}]]></component>\n  <component name=\"ProblemsViewState\">\n    <option name=\"selectedTabId\" value=\"ProjectErrors\" />\n  </component>\n  <component name=\"ProjectColorInfo\">{\n  &quot;associatedIndex&quot;: 0\n}</component>\n  <component name=\"ProjectId\" id=\"2lZ3tWJE3wtj5zJXnyMqORbchpy\" />\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\">\n    <OptionsSetting value=\"false\" id=\"Update\" />\n    <ConfirmationsSetting value=\"2\" id=\"Add\" />\n  </component>\n  <component name=\"ProjectViewState\">\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\n    <option name=\"showLibraryContents\" value=\"true\" />\n  </component>\n  <component name=\"PropertiesComponent\"><![CDATA[{\n  \"keyToString\": {\n    \"Python.V1.executor\": \"Run\",\n    \"Python.V3.executor\": \"Run\",\n    \"Python.V3_Backup.executor\": \"Run\",\n    \"Python.db_version.executor\": \"Run\",\n    \"Python.db_version_Backup.executor\": \"Run\",\n    \"Python.file_collector.executor\": \"Run\",\n    \"Python.main.executor\": \"Run\",\n    \"Python.main_backup.executor\": \"Run\",\n    \"Python.test2.executor\": \"Run\",\n    \"Python.testing.executor\": \"Run\",\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\n    \"SHARE_PROJECT_CONFIGURATION_FILES\": \"true\",\n    \"com.codeium.enabled\": \"true\",\n    \"git-widget-placeholder\": \"draft\",\n    \"last_opened_file_path\": \"C:/Users/alex.jessup/OneDrive - Cadorath Group/Documents/GitHub/Aerospace-Scrap-Logbook\",\n    \"node.js.detected.package.eslint\": \"true\",\n    \"node.js.detected.package.tslint\": \"true\",\n    \"node.js.selected.package.eslint\": \"(autodetect)\",\n    \"node.js.selected.package.tslint\": \"(autodetect)\",\n    \"nodejs_package_manager_path\": \"npm\",\n    \"run.code.analysis.last.selected.profile\": \"aDefault\",\n    \"settings.editor.selected.configurable\": \"preferences.pluginManager\",\n    \"vue.rearranger.settings.migration\": \"true\"\n  }\n}]]></component>\n  <component name=\"QodanaReportsService\">\n    <option name=\"descriptions\">\n      <ReportDescription localRun=\"true\" path=\"/tmp/qodana_output/qodana.sarif.json\" reportGuid=\"fcfccaa1-730a-4d33-9770-8a3b95dcdb77\" reportId=\"Aerospace Scrap Logbook/qodana/2024-09-04\" />\n    </option>\n  </component>\n  <component name=\"RecentsManager\">\n    <key name=\"CopyFile.RECENT_KEYS\">\n      <recent name=\"C:\\Users\\alex.jessup\\OneDrive - Cadorath Group\\Documents\\GitHub\\Aerospace-Scrap-Logbook\" />\n      <recent name=\"$PROJECT_DIR$\" />\n    </key>\n    <key name=\"MoveFile.RECENT_KEYS\">\n      <recent name=\"C:\\Users\\alex.jessup\\OneDrive - Cadorath Group\\Documents\\GitHub\\Aerospace-Scrap-Logbook\" />\n    </key>\n  </component>\n  <component name=\"RunManager\">\n    <configuration name=\"V3\" type=\"PythonConfigurationType\" factoryName=\"Python\" nameIsGenerated=\"true\">\n      <module name=\"Aerospace Scrap Logbook\" />\n      <option name=\"ENV_FILES\" value=\"\" />\n      <option name=\"INTERPRETER_OPTIONS\" value=\"\" />\n      <option name=\"PARENT_ENVS\" value=\"true\" />\n      <envs>\n        <env name=\"PYTHONUNBUFFERED\" value=\"1\" />\n      </envs>\n      <option name=\"SDK_HOME\" value=\"\" />\n      <option name=\"SDK_NAME\" value=\"Python 3.12\" />\n      <option name=\"WORKING_DIRECTORY\" value=\"$PROJECT_DIR$\" />\n      <option name=\"IS_MODULE_SDK\" value=\"false\" />\n      <option name=\"ADD_CONTENT_ROOTS\" value=\"true\" />\n      <option name=\"ADD_SOURCE_ROOTS\" value=\"true\" />\n      <EXTENSION ID=\"PythonCoverageRunConfigurationExtension\" runner=\"coverage.py\" />\n      <option name=\"SCRIPT_NAME\" value=\"$PROJECT_DIR$/V3.py\" />\n      <option name=\"PARAMETERS\" value=\"\" />\n      <option name=\"SHOW_COMMAND_LINE\" value=\"false\" />\n      <option name=\"EMULATE_TERMINAL\" value=\"false\" />\n      <option name=\"MODULE_MODE\" value=\"false\" />\n      <option name=\"REDIRECT_INPUT\" value=\"false\" />\n      <option name=\"INPUT_FILE\" value=\"\" />\n      <method v=\"2\" />\n    </configuration>\n  </component>\n  <component name=\"SharedIndexes\">\n    <attachedChunks>\n      <set>\n        <option value=\"bundled-js-predefined-d6986cc7102b-7c0b70fcd90d-JavaScript-PY-242.21829.153\" />\n        <option value=\"bundled-python-sdk-464836ebc622-b74155a9e76b-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-242.21829.153\" />\n      </set>\n    </attachedChunks>\n  </component>\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\n  <component name=\"TaskManager\">\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\n      <changelist id=\"603c2501-99fc-4960-963a-5b2d6f29a5ec\" name=\"Changes\" comment=\"\" />\n      <created>1725373985706</created>\n      <option name=\"number\" value=\"Default\" />\n      <option name=\"presentableId\" value=\"Default\" />\n      <updated>1725373985706</updated>\n      <workItem from=\"1725373987057\" duration=\"6304000\" />\n      <workItem from=\"1725386475189\" duration=\"2959000\" />\n      <workItem from=\"1725389848598\" duration=\"1458000\" />\n      <workItem from=\"1725449345640\" duration=\"12985000\" />\n      <workItem from=\"1725536284305\" duration=\"3500000\" />\n      <workItem from=\"1725542404407\" duration=\"853000\" />\n      <workItem from=\"1725543274111\" duration=\"16193000\" />\n      <workItem from=\"1725881745764\" duration=\"3174000\" />\n      <workItem from=\"1725896981435\" duration=\"16500000\" />\n      <workItem from=\"1726054972838\" duration=\"431000\" />\n      <workItem from=\"1726055414206\" duration=\"18939000\" />\n      <workItem from=\"1726142721541\" duration=\"10184000\" />\n      <workItem from=\"1726163005362\" duration=\"2160000\" />\n      <workItem from=\"1726228277337\" duration=\"13116000\" />\n    </task>\n    <task id=\"LOCAL-00001\" summary=\"Initial versions of the Scrap Log for Aerospace\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1725389614417</created>\n      <option name=\"number\" value=\"00001\" />\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1725389614417</updated>\n    </task>\n    <task id=\"LOCAL-00002\" summary=\"Added colorization of required fields, requirement missing alert box, and testing of copying XLSM files in order to work of copies instead of orignals\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1725477860207</created>\n      <option name=\"number\" value=\"00002\" />\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1725477860207</updated>\n    </task>\n    <task id=\"LOCAL-00003\" summary=\"Switched from working wit ha CSV file into working with a db file as it is more reliable and faster to load.\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1725565192339</created>\n      <option name=\"number\" value=\"00003\" />\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1725565192339</updated>\n    </task>\n    <task id=\"LOCAL-00004\" summary=\"Switched from working wit ha CSV file into working with a db file as it is more reliable and faster to load.\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1725565210185</created>\n      <option name=\"number\" value=\"00004\" />\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1725565210185</updated>\n    </task>\n    <task id=\"LOCAL-00005\" summary=\"Updated DB version\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1725897023155</created>\n      <option name=\"number\" value=\"00005\" />\n      <option name=\"presentableId\" value=\"LOCAL-00005\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1725897023156</updated>\n    </task>\n    <task id=\"LOCAL-00006\" summary=\"Added old scrap log data to be added to db file\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1725969625791</created>\n      <option name=\"number\" value=\"00006\" />\n      <option name=\"presentableId\" value=\"LOCAL-00006\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1725969625791</updated>\n    </task>\n    <task id=\"LOCAL-00007\" summary=\"Uploading to work from laptop\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1725994384766</created>\n      <option name=\"number\" value=\"00007\" />\n      <option name=\"presentableId\" value=\"LOCAL-00007\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1725994384766</updated>\n    </task>\n    <task id=\"LOCAL-00008\" summary=\"Uploading to work from laptop\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1725997888226</created>\n      <option name=\"number\" value=\"00008\" />\n      <option name=\"presentableId\" value=\"LOCAL-00008\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1725997888226</updated>\n    </task>\n    <task id=\"LOCAL-00009\" summary=\"Uploading to work from laptop\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1726062327622</created>\n      <option name=\"number\" value=\"00009\" />\n      <option name=\"presentableId\" value=\"LOCAL-00009\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1726062327622</updated>\n    </task>\n    <task id=\"LOCAL-00010\" summary=\"Added column sorting by clicking on headers.\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1726170293215</created>\n      <option name=\"number\" value=\"00010\" />\n      <option name=\"presentableId\" value=\"LOCAL-00010\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1726170293215</updated>\n    </task>\n    <option name=\"localTasksCounter\" value=\"11\" />\n    <servers />\n  </component>\n  <component name=\"TypeScriptGeneratedFilesManager\">\n    <option name=\"version\" value=\"3\" />\n  </component>\n  <component name=\"Vcs.Log.Tabs.Properties\">\n    <option name=\"TAB_STATES\">\n      <map>\n        <entry key=\"MAIN\">\n          <value>\n            <State />\n          </value>\n        </entry>\n      </map>\n    </option>\n  </component>\n  <component name=\"VcsManagerConfiguration\">\n    <MESSAGE value=\"Initial versions of the Scrap Log for Aerospace\" />\n    <MESSAGE value=\"Added colorization of required fields, requirement missing alert box, and testing of copying XLSM files in order to work of copies instead of orignals\" />\n    <MESSAGE value=\"Switched from working wit ha CSV file into working with a db file as it is more reliable and faster to load.\" />\n    <MESSAGE value=\"Updated DB version\" />\n    <MESSAGE value=\"Added old scrap log data to be added to db file\" />\n    <MESSAGE value=\"Uploading to work from laptop\" />\n    <MESSAGE value=\"Added column sorting by clicking on headers.\" />\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"Added column sorting by clicking on headers.\" />\n  </component>\n  <component name=\"com.intellij.coverage.CoverageDataManagerImpl\">\n    <SUITE FILE_PATH=\"coverage/Aerospace_Scrap_Logbook$main_backup.coverage\" NAME=\"main_backup Coverage Results\" MODIFIED=\"1725555483066\" SOURCE_PROVIDER=\"com.intellij.coverage.DefaultCoverageFileProvider\" RUNNER=\"coverage.py\" COVERAGE_BY_TEST_ENABLED=\"false\" COVERAGE_TRACING_ENABLED=\"false\" WORKING_DIRECTORY=\"$PROJECT_DIR$\" />\n    <SUITE FILE_PATH=\"coverage/Aerospace_Scrap_Logbook$V3_Backup.coverage\" NAME=\"V3_Backup Coverage Results\" MODIFIED=\"1726169461070\" SOURCE_PROVIDER=\"com.intellij.coverage.DefaultCoverageFileProvider\" RUNNER=\"coverage.py\" COVERAGE_BY_TEST_ENABLED=\"false\" COVERAGE_TRACING_ENABLED=\"false\" WORKING_DIRECTORY=\"$PROJECT_DIR$\" />\n    <SUITE FILE_PATH=\"coverage/Aerospace_Scrap_Logbook$V1.coverage\" NAME=\"V1 Coverage Results\" MODIFIED=\"1725974246643\" SOURCE_PROVIDER=\"com.intellij.coverage.DefaultCoverageFileProvider\" RUNNER=\"coverage.py\" COVERAGE_BY_TEST_ENABLED=\"false\" COVERAGE_TRACING_ENABLED=\"false\" WORKING_DIRECTORY=\"$PROJECT_DIR$\" />\n    <SUITE FILE_PATH=\"coverage/Aerospace_Scrap_Logbook$test2.coverage\" NAME=\"test2 Coverage Results\" MODIFIED=\"1725476861999\" SOURCE_PROVIDER=\"com.intellij.coverage.DefaultCoverageFileProvider\" RUNNER=\"coverage.py\" COVERAGE_BY_TEST_ENABLED=\"false\" COVERAGE_TRACING_ENABLED=\"false\" WORKING_DIRECTORY=\"$PROJECT_DIR$\" />\n    <SUITE FILE_PATH=\"coverage/Aerospace_Scrap_Logbook$pyqt_db_version.coverage\" NAME=\"pyqt_db_version Coverage Results\" MODIFIED=\"1725968707296\" SOURCE_PROVIDER=\"com.intellij.coverage.DefaultCoverageFileProvider\" RUNNER=\"coverage.py\" COVERAGE_BY_TEST_ENABLED=\"false\" COVERAGE_TRACING_ENABLED=\"false\" WORKING_DIRECTORY=\"$PROJECT_DIR$\" />\n    <SUITE FILE_PATH=\"coverage/Aerospace_Scrap_Logbook$V3.coverage\" NAME=\"V3 Coverage Results\" MODIFIED=\"1726244063291\" SOURCE_PROVIDER=\"com.intellij.coverage.DefaultCoverageFileProvider\" RUNNER=\"coverage.py\" COVERAGE_BY_TEST_ENABLED=\"false\" COVERAGE_TRACING_ENABLED=\"false\" WORKING_DIRECTORY=\"$PROJECT_DIR$\" />\n    <SUITE FILE_PATH=\"coverage/Aerospace_Scrap_Logbook$main.coverage\" NAME=\"main Coverage Results\" MODIFIED=\"1725563854938\" SOURCE_PROVIDER=\"com.intellij.coverage.DefaultCoverageFileProvider\" RUNNER=\"coverage.py\" COVERAGE_BY_TEST_ENABLED=\"false\" COVERAGE_TRACING_ENABLED=\"false\" WORKING_DIRECTORY=\"$PROJECT_DIR$\" />\n    <SUITE FILE_PATH=\"coverage/Aerospace_Scrap_Logbook$db_version.coverage\" NAME=\"db_version Coverage Results\" MODIFIED=\"1725890758654\" SOURCE_PROVIDER=\"com.intellij.coverage.DefaultCoverageFileProvider\" RUNNER=\"coverage.py\" COVERAGE_BY_TEST_ENABLED=\"false\" COVERAGE_TRACING_ENABLED=\"false\" WORKING_DIRECTORY=\"$PROJECT_DIR$\" />\n    <SUITE FILE_PATH=\"coverage/Aerospace_Scrap_Logbook$db_version_Backup.coverage\" NAME=\"db_version_Backup Coverage Results\" MODIFIED=\"1726055911071\" SOURCE_PROVIDER=\"com.intellij.coverage.DefaultCoverageFileProvider\" RUNNER=\"coverage.py\" COVERAGE_BY_TEST_ENABLED=\"false\" COVERAGE_TRACING_ENABLED=\"false\" WORKING_DIRECTORY=\"$PROJECT_DIR$\" />\n    <SUITE FILE_PATH=\"coverage/Aerospace_Scrap_Logbook$testing.coverage\" NAME=\"testing Coverage Results\" MODIFIED=\"1725561394558\" SOURCE_PROVIDER=\"com.intellij.coverage.DefaultCoverageFileProvider\" RUNNER=\"coverage.py\" COVERAGE_BY_TEST_ENABLED=\"false\" COVERAGE_TRACING_ENABLED=\"false\" WORKING_DIRECTORY=\"$PROJECT_DIR$\" />\n    <SUITE FILE_PATH=\"coverage/Aerospace_Scrap_Logbook$file_collector.coverage\" NAME=\"file_collector Coverage Results\" MODIFIED=\"1726238779363\" SOURCE_PROVIDER=\"com.intellij.coverage.DefaultCoverageFileProvider\" RUNNER=\"coverage.py\" COVERAGE_BY_TEST_ENABLED=\"false\" COVERAGE_TRACING_ENABLED=\"false\" WORKING_DIRECTORY=\"$PROJECT_DIR$\" />\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 2f18c14c3d9c1fb377c6ad8be62364cbf582616d)
++++ b/.idea/workspace.xml	(date 1726245489309)
+@@ -4,16 +4,7 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="603c2501-99fc-4960-963a-5b2d6f29a5ec" name="Changes" comment="Added column sorting by clicking on headers.">
+-      <change afterPath="$PROJECT_DIR$/file_collector.py" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/file_collector_Backup.py" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_9_6_24,_6_22 AM_[Changes]/shelved.patch" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_9_6_24__6_22AM__Changes_.xml" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/V3.py" beforeDir="false" afterPath="$PROJECT_DIR$/V3.py" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/V3_Backup.py" beforeDir="false" afterPath="$PROJECT_DIR$/V3_Backup.py" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/scrap_logbook.db" beforeDir="false" afterPath="$PROJECT_DIR$/scrap_logbook.db" afterDir="false" />
+-    </list>
++    <list default="true" id="603c2501-99fc-4960-963a-5b2d6f29a5ec" name="Changes" comment="Added column sorting by clicking on headers." />
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+@@ -40,12 +31,12 @@
+     &quot;assignee&quot;: &quot;GimpyHand&quot;
+   }
+ }</component>
+-  <component name="GithubPullRequestsUISettings"><![CDATA[{
+-  "selectedUrlAndAccountId": {
+-    "url": "https://github.com/GimpyHand/Aerospace-Scrap-Logbook.git",
+-    "accountId": "14b1df0d-ece0-40cd-956f-91c54fd64b85"
+-  }
+-}]]></component>
++  <component name="GithubPullRequestsUISettings">{
++  &quot;selectedUrlAndAccountId&quot;: {
++    &quot;url&quot;: &quot;https://github.com/GimpyHand/Aerospace-Scrap-Logbook.git&quot;,
++    &quot;accountId&quot;: &quot;14b1df0d-ece0-40cd-956f-91c54fd64b85&quot;
++  }
++}</component>
+   <component name="ProblemsViewState">
+     <option name="selectedTabId" value="ProjectErrors" />
+   </component>
+@@ -61,33 +52,33 @@
+     <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
+   </component>
+-  <component name="PropertiesComponent"><![CDATA[{
+-  "keyToString": {
+-    "Python.V1.executor": "Run",
+-    "Python.V3.executor": "Run",
+-    "Python.V3_Backup.executor": "Run",
+-    "Python.db_version.executor": "Run",
+-    "Python.db_version_Backup.executor": "Run",
+-    "Python.file_collector.executor": "Run",
+-    "Python.main.executor": "Run",
+-    "Python.main_backup.executor": "Run",
+-    "Python.test2.executor": "Run",
+-    "Python.testing.executor": "Run",
+-    "RunOnceActivity.ShowReadmeOnStart": "true",
+-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+-    "com.codeium.enabled": "true",
+-    "git-widget-placeholder": "draft",
+-    "last_opened_file_path": "C:/Users/alex.jessup/OneDrive - Cadorath Group/Documents/GitHub/Aerospace-Scrap-Logbook",
+-    "node.js.detected.package.eslint": "true",
+-    "node.js.detected.package.tslint": "true",
+-    "node.js.selected.package.eslint": "(autodetect)",
+-    "node.js.selected.package.tslint": "(autodetect)",
+-    "nodejs_package_manager_path": "npm",
+-    "run.code.analysis.last.selected.profile": "aDefault",
+-    "settings.editor.selected.configurable": "preferences.pluginManager",
+-    "vue.rearranger.settings.migration": "true"
++  <component name="PropertiesComponent">{
++  &quot;keyToString&quot;: {
++    &quot;Python.V1.executor&quot;: &quot;Run&quot;,
++    &quot;Python.V3.executor&quot;: &quot;Run&quot;,
++    &quot;Python.V3_Backup.executor&quot;: &quot;Run&quot;,
++    &quot;Python.db_version.executor&quot;: &quot;Run&quot;,
++    &quot;Python.db_version_Backup.executor&quot;: &quot;Run&quot;,
++    &quot;Python.file_collector.executor&quot;: &quot;Run&quot;,
++    &quot;Python.main.executor&quot;: &quot;Run&quot;,
++    &quot;Python.main_backup.executor&quot;: &quot;Run&quot;,
++    &quot;Python.test2.executor&quot;: &quot;Run&quot;,
++    &quot;Python.testing.executor&quot;: &quot;Run&quot;,
++    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
++    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
++    &quot;com.codeium.enabled&quot;: &quot;true&quot;,
++    &quot;git-widget-placeholder&quot;: &quot;draft&quot;,
++    &quot;last_opened_file_path&quot;: &quot;C:/Users/alex.jessup/OneDrive - Cadorath Group/Documents/GitHub/Aerospace-Scrap-Logbook&quot;,
++    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
++    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
++    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
++    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
++    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
++    &quot;run.code.analysis.last.selected.profile&quot;: &quot;aDefault&quot;,
++    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
++    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+   }
+-}]]></component>
++}</component>
+   <component name="QodanaReportsService">
+     <option name="descriptions">
+       <ReportDescription localRun="true" path="/tmp/qodana_output/qodana.sarif.json" reportGuid="fcfccaa1-730a-4d33-9770-8a3b95dcdb77" reportId="Aerospace Scrap Logbook/qodana/2024-09-04" />
+@@ -112,7 +103,6 @@
+         <env name="PYTHONUNBUFFERED" value="1" />
+       </envs>
+       <option name="SDK_HOME" value="" />
+-      <option name="SDK_NAME" value="Python 3.12" />
+       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+       <option name="IS_MODULE_SDK" value="false" />
+       <option name="ADD_CONTENT_ROOTS" value="true" />
+@@ -267,16 +257,16 @@
+     <option name="LAST_COMMIT_MESSAGE" value="Added column sorting by clicking on headers." />
+   </component>
+   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+-    <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$main_backup.coverage" NAME="main_backup Coverage Results" MODIFIED="1725555483066" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+-    <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$V3_Backup.coverage" NAME="V3_Backup Coverage Results" MODIFIED="1726169461070" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
++    <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$main.coverage" NAME="main Coverage Results" MODIFIED="1725563854938" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
++    <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$testing.coverage" NAME="testing Coverage Results" MODIFIED="1725561394558" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+     <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$V1.coverage" NAME="V1 Coverage Results" MODIFIED="1725974246643" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
++    <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$db_version.coverage" NAME="db_version Coverage Results" MODIFIED="1725890758654" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
++    <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$db_version_Backup.coverage" NAME="db_version_Backup Coverage Results" MODIFIED="1726055911071" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
++    <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$V3_Backup.coverage" NAME="V3_Backup Coverage Results" MODIFIED="1726245212308" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+     <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$test2.coverage" NAME="test2 Coverage Results" MODIFIED="1725476861999" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+-    <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$pyqt_db_version.coverage" NAME="pyqt_db_version Coverage Results" MODIFIED="1725968707296" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+     <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$V3.coverage" NAME="V3 Coverage Results" MODIFIED="1726244063291" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+-    <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$main.coverage" NAME="main Coverage Results" MODIFIED="1725563854938" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+-    <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$db_version.coverage" NAME="db_version Coverage Results" MODIFIED="1725890758654" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+-    <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$db_version_Backup.coverage" NAME="db_version_Backup Coverage Results" MODIFIED="1726055911071" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+-    <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$testing.coverage" NAME="testing Coverage Results" MODIFIED="1725561394558" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
++    <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$pyqt_db_version.coverage" NAME="pyqt_db_version Coverage Results" MODIFIED="1725968707296" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+     <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$file_collector.coverage" NAME="file_collector Coverage Results" MODIFIED="1726238779363" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
++    <SUITE FILE_PATH="coverage/Aerospace_Scrap_Logbook$main_backup.coverage" NAME="main_backup Coverage Results" MODIFIED="1725555483066" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+   </component>
+ </project>
+\ No newline at end of file
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"Black\">\n    <option name=\"sdkName\" value=\"Python 3.12 (Aerospace Scrap Logbook)\" />\n  </component>\n  <component name=\"ProjectRootManager\" version=\"2\" project-jdk-name=\"Python 3.12\" project-jdk-type=\"Python SDK\" />\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	(revision 2f18c14c3d9c1fb377c6ad8be62364cbf582616d)
++++ b/.idea/misc.xml	(date 1726245489312)
+@@ -3,5 +3,5 @@
+   <component name="Black">
+     <option name="sdkName" value="Python 3.12 (Aerospace Scrap Logbook)" />
+   </component>
+-  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.12" project-jdk-type="Python SDK" />
++  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.12 (Aerospace Scrap Logbook)" project-jdk-type="Python SDK" />
+ </project>
+\ No newline at end of file
