@@ -14,14 +14,6 @@ from datetime import datetime
 from openpyxl import load_workbook
 from openpyxl.utils.exceptions import InvalidFileException
 from zipfile import BadZipFile
-import sentry_sdk
-
-sentry_sdk.init(
-    dsn="https://82c157cdfc96b20cf54c1fd5ec40325a@o4507980412485632.ingest.us.sentry.io/4507980415827968",
-    traces_sample_rate=1.0,
-    profiles_sample_rate=1.0,
-    enable_tracing=True,
-)
 
 warnings.filterwarnings("ignore", category=UserWarning, module="openpyxl")
 
